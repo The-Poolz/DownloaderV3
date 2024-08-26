@@ -1,3 +1,7 @@
 ﻿namespace DownloaderContext.Types;
 
-public enum ResponseType { }
+public enum ResponseType
+{
+    SignUpEventPoolActivated,
+    SignUpEventPoolDeactivated
+}
