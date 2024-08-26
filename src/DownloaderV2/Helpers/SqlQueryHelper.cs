@@ -1,15 +1,16 @@
-﻿using DownloaderContext.Models;
+﻿using DownloaderContext;
+using DownloaderContext.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DownloaderV2.Helpers;
 
-public class SqlQueryHelper(DbContext context)
+public class SqlQueryHelper(BaseDownloaderContext context)
 {
     public void UpdateDownloaderSettings(DownloaderSettings settings, long endingBlock, long latestBlock)
     {
         lock (context)
         {
-            var item = context.Set<DownloaderSettings>().FirstOrDefault(T =>
+            var item = context.DownloaderSettings.FirstOrDefault(T =>
                 T.ChainId == settings.ChainId &&
                 T.ResponseType == settings.ResponseType &&
                 T.EventHash == settings.EventHash &&
@@ -18,7 +19,7 @@ public class SqlQueryHelper(DbContext context)
             item.StartingBlock = endingBlock;
             item.EndingBlock = latestBlock;
 
-            context.Set<DownloaderSettings>().Update(item);
+            context.DownloaderSettings.Update(item);
         }
     }
 
