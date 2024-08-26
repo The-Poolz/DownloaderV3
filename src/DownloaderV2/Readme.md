@@ -1,49 +1,50 @@
-# AWS Lambda Empty Function Project
+# DownloaderV2 Project
 
-This starter project consists of:
-* Function.cs - class file containing a class with a single function handler method
-* aws-lambda-tools-defaults.json - default argument settings for use with Visual Studio and command line deployment tools for AWS
+DownloaderV2 is a flexible and reusable .NET library designed for downloading and processing data using a provided database context. The library is intended to be integrated into various projects that require reliable data handling operations.
 
-You may also have a test project depending on the options selected.
+## Features
+- Extensible: Easily integrate with different database contexts by extending the base context (BaseDownloaderContext).
+- Simple API: Provides an easy-to-use API for initializing and running data download processes.
+- Modular Design: Designed to be modular and easily extendable to fit different data processing needs.
 
-The generated function handler is a simple method accepting a string argument that returns the uppercase equivalent of the input string. Replace the body of this method, and parameters, to suit your needs. 
+## Getting Started
+Prerequisites
+.NET 8.0 or later
+An existing project where you want to integrate the DownloaderV2 library
 
-## Here are some steps to follow from Visual Studio:
+## Installation
+As this is the initial version of DownloaderV2, you can clone the repository and add it to your solution:
 
-To deploy your function to AWS Lambda, right click the project in Solution Explorer and select *Publish to AWS Lambda*.
-
-To view your deployed function open its Function View window by double-clicking the function name shown beneath the AWS Lambda node in the AWS Explorer tree.
-
-To perform testing against your deployed function use the Test Invoke tab in the opened Function View window.
-
-To configure event sources for your deployed function, for example to have your function invoked when an object is created in an Amazon S3 bucket, use the Event Sources tab in the opened Function View window.
-
-To update the runtime configuration of your deployed function use the Configuration tab in the opened Function View window.
-
-To view execution logs of invocations of your function use the Logs tab in the opened Function View window.
-
-## Here are some steps to follow to get started from the command line:
-
-Once you have edited your template and code you can deploy your application using the [Amazon.Lambda.Tools Global Tool](https://github.com/aws/aws-extensions-for-dotnet-cli#aws-lambda-amazonlambdatools) from the command line.
-
-Install Amazon.Lambda.Tools Global Tools if not already installed.
-```
-    dotnet tool install -g Amazon.Lambda.Tools
+```csharp
+git clone https://github.com/The-Poolz/DownloaderV2.git
 ```
 
-If already installed check if new version is available.
-```
-    dotnet tool update -g Amazon.Lambda.Tools
+Or, if you've packaged it as a NuGet package:
+
+```csharp
+dotnet add package DownloaderV2
 ```
 
-Execute unit tests
-```
-    cd "SaveLogsByContract/test/SaveLogsByContract.Tests"
-    dotnet test
-```
 
-Deploy function to AWS Lambda
+## Usage
+1. Add a Reference: Add a reference to the DownloaderV2 project in your solution.
+
+2. Instantiate the DownloaderV2Run class: Pass your specific BaseDownloaderContext or a derived context.
+
+Example:
+
+```csharp
+using DownloaderV2;
+using DownloaderContext;
+
+var context = new YourDerivedContext(/* options */);
+var downloader = new DownloaderV2Run(context);
+var results = await downloader.RunAsync();
 ```
-    cd "SaveLogsByContract/src/SaveLogsByContract"
-    dotnet lambda deploy-function
-```
+3. Configure Database Context: Ensure your database context is correctly configured and passed to the library.
+
+Contributing
+Contributions are welcome! Please feel free to submit issues, fork the repository, and send pull requests.
+
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
