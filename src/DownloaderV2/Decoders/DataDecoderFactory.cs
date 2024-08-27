@@ -1,6 +1,7 @@
 ﻿using DownloaderV2.Helpers;
 using Newtonsoft.Json.Linq;
 using DownloaderContext.Models;
+using System.Reflection;
 
 namespace DownloaderV2.Decoders;
 
@@ -17,7 +18,8 @@ public class DataDecoderFactory
 
     public static DataDecoder GetConverter(string converterName)
     {
-        var typeName = $"DownloaderV2.Decoders.DataDecoders.{converterName}, DownloaderV2";
+        var executingAssembly = Assembly.GetExecutingAssembly().GetName().Name;
+        var typeName = $"{executingAssembly}.Decoders.DataDecoders.{converterName}, {executingAssembly}";
         var type = Type.GetType(typeName) ?? ApplicationLogger.LogAndThrowDynamic(new InvalidOperationException(string.Format(ExceptionMessages.DecoderTypeNotFound, converterName)));
         return (DataDecoder)Activator.CreateInstance(type)!;
     }
