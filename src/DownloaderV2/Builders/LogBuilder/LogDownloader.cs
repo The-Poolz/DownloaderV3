@@ -3,14 +3,14 @@ using UrlFiller.Resolver;
 using DownloaderV2.Helpers;
 using DownloaderContext.Models;
 using DownloaderV2.HttpFlurlClient;
-using DownloaderV2.Models.Covalent;
+using DownloaderV2.Models.ApiCovalent;
 using DownloaderV2.Builders.LogBuilder.Resolvers;
 
 namespace DownloaderV2.Builders.LogBuilder;
 
 public class LogDownloader : CalculatedValueResolver
 {
-    public InputData DownloadedContractData { get; }
+    public IInputData DownloadedContractData { get; }
     private string UrlSet { get; set; }
     private URLParser Url { get; set; }
     public long LastSavedBlock { get; set; }
@@ -43,6 +43,6 @@ public class LogDownloader : CalculatedValueResolver
         Url = new URLParser(valueResolvers, true);
 
         var response = Request.CovalentResponse(Url.ParseUrl(UrlSet)).GetAwaiter().GetResult();
-        DownloadedContractData = response?.ToObject<InputData>() ?? ApplicationLogger.LogAndThrowDynamic(new NullReferenceException(ExceptionMessages.FailedToRetrieveDataFromCovalentApi));
+        DownloadedContractData = response?.ToObject<IInputData>() ?? ApplicationLogger.LogAndThrowDynamic(new NullReferenceException(ExceptionMessages.FailedToRetrieveDataFromCovalentApi));
     }
 }

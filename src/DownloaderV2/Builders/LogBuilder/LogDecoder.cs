@@ -3,7 +3,7 @@ using DownloaderV2.LogRouter;
 using DownloaderContext.Types;
 using DownloaderV2.Extensions;
 using DownloaderContext.Models;
-using DownloaderV2.Models.Covalent;
+using DownloaderV2.Models.ApiCovalent;
 
 namespace DownloaderV2.Builders.LogBuilder;
 
@@ -12,7 +12,7 @@ public class LogDecoder
     public SavedLogResponse LogResponses { get; }
     public int EventCount => LogResponses.Count;
 
-    public LogDecoder(DownloaderSettings downloaderSettings, InputData inputData)
+    public LogDecoder(DownloaderSettings downloaderSettings, IInputData inputData)
     {
         LogResponses = new SavedLogResponse();
 
