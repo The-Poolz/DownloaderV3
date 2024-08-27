@@ -6,20 +6,31 @@ namespace DownloaderV2.LogRouter;
 
 public static class LogRouter
 {
-    private const string DefaultClassLocation = "CovalentDB.Models.ResponseModels.{0}, CovalentDB";
-    private const string ResponseTypesClassLocation = "CovalentDB.Models.ResponseModels.{0}, CovalentDB";
+    private static string DefaultClassLocation { get; set; } = null!;
+    private static string ResponseTypesClassLocation { get; set; } = null!;
 
-    public static readonly IReadOnlyDictionary<ResponseType, PropertySetterBeforeSave> ResponseTypes = new Dictionary<ResponseType, PropertySetterBeforeSave>
+    private static readonly Dictionary<ResponseType, PropertySetterBeforeSave> ResponseTypes = new();
+
+    public static void Configure(string defaultClassLocation, string responseTypesClassLocation)
     {
-        { ResponseType.SignUpEventPoolActivated, new PropertySetterBeforeSave("EventName", "NewPoolActivated", "SignUpEvent") },
-        { ResponseType.SignUpEventPoolDeactivated, new PropertySetterBeforeSave("EventName", "PoolDeactivated", "SignUpEvent") },
-    };
+        DefaultClassLocation = defaultClassLocation ?? throw new ArgumentNullException(nameof(defaultClassLocation));
+        ResponseTypesClassLocation = responseTypesClassLocation ?? throw new ArgumentNullException(nameof(responseTypesClassLocation));
+    }
 
-    private static PropertySetterBeforeSave? GetSetterBeforeSave(ResponseType response) =>
-        ResponseTypes.ContainsKey(response) ? ResponseTypes[response] : null;
+    public static void AddResponseType(ResponseType responseType, PropertySetterBeforeSave propertySetter)
+    {
+        ResponseTypes.TryAdd(responseType, propertySetter);
+    }
+
+    private static PropertySetterBeforeSave? GetSetterBeforeSave(ResponseType response) => ResponseTypes.ContainsKey(response) ? ResponseTypes[response] : null;
 
     public static PreSaveActionBinder GetBinder(ResponseType type)
     {
+        if (string.IsNullOrEmpty(DefaultClassLocation) || string.IsNullOrEmpty(ResponseTypesClassLocation))
+        {
+            throw new InvalidOperationException("LogRouter is not configured. Please call LogRouter.Configure with the correct class locations.");
+        }
+
         var classLocation = ResponseTypes.TryGetValue(type, out var propertySetter)
             ? string.Format(ResponseTypesClassLocation, propertySetter.DbSetName)
             : string.Format(DefaultClassLocation, type);
@@ -27,7 +38,7 @@ public static class LogRouter
         var responseType = Type.GetType(classLocation) ?? ApplicationLogger.LogAndThrowDynamic(new ArgumentException(string.Format(ExceptionMessages.ClassSpecificationError, classLocation)));
 
         var genericResponseType = typeof(GenericResponse<>).MakeGenericType(responseType);
-        
+
         return new PreSaveActionBinder(genericResponseType, GetSetterBeforeSave(type));
     }
 
