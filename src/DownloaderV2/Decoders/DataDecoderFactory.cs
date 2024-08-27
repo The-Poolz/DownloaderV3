@@ -17,7 +17,7 @@ public class DataDecoderFactory
 
     public static DataDecoder GetConverter(string converterName)
     {
-        var typeName = $"SaveLogsByContract.Decoders.DataDecoders.{converterName}, SaveLogsByContract";
+        var typeName = $"DownloaderV2.Decoders.DataDecoders.{converterName}, DownloaderV2";
         var type = Type.GetType(typeName) ?? ApplicationLogger.LogAndThrowDynamic(new InvalidOperationException(string.Format(ExceptionMessages.DecoderTypeNotFound, converterName)));
         return (DataDecoder)Activator.CreateInstance(type)!;
     }
