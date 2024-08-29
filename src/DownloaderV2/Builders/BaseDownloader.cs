@@ -7,8 +7,7 @@ namespace DownloaderV2.Builders;
 
 public class BaseDownloader
 {
-    protected BaseDownloader() => GetUri = $"{Environments.LastBlockDownloaderUrl.Get<string>()}{Environments.LastBlockKey.Get<string>()}";
+    public string GetUri{ get; } = $"{Environments.LastBlockDownloaderUrl.Get<string>()}{Environments.LastBlockKey.Get<string>()}";
 
-    private string GetUri{ get; }
     protected JToken? DownloadData => Request.CovalentResponse(GetUri).GetAwaiter().GetResult();
 }

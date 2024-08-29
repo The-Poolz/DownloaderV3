@@ -15,7 +15,7 @@ public class LastBlockDownloader : BaseDownloader
     private LastBlockResponse DownloadedLastBlockData { get; }
     private void MakeLastBlocksDictionary()
     {
-        foreach (var item in DownloadedLastBlockData.Data.Items ?? Array.Empty<Item>())
+        foreach (var item in DownloadedLastBlockData.Data.Items ?? [])
             LastBlockDictionary[item.ChainId] = item.BlockHeight;
     }
 }
