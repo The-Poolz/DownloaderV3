@@ -2,9 +2,9 @@
 using UrlFiller.Resolver;
 using DownloaderV2.Helpers;
 using DownloaderContext.Models;
+using DownloaderV2.Models.Covalent;
 using DownloaderV2.HttpFlurlClient;
 using DownloaderV2.Builders.LogBuilder.Resolvers;
-using DownloaderV2.Models.Covalent;
 
 namespace DownloaderV2.Builders.LogBuilder;
 

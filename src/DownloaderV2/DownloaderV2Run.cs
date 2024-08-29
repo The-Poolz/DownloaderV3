@@ -1,16 +1,17 @@
 ﻿using DownloaderContext;
+using DownloaderV2.Base;
 using DownloaderV2.Result;
 using DownloaderV2.Helpers;
 
 namespace DownloaderV2
 {
-    public class DownloaderV2Run(BaseDownloaderContext context)
+    public class DownloaderV2Run(BaseDownloaderContext context, IDownloadHandlerFactory factory)
     {
         public async Task<IEnumerable<ResultObject>> RunAsync()
         {
             ApplicationLogger.Initialize();
-
-            return await new DownloadHandler(context).HandleAsync();
+            var handler = factory.Create(context);
+            return await handler.HandleAsync();
         }
     }
 }

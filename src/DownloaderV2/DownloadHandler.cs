@@ -3,19 +3,20 @@ using DownloaderV2.Result;
 using DownloaderV2.Helpers;
 using Net.Utils.TaskManager;
 using DownloaderContext.Models;
+using DownloaderV2.Base;
 using DownloaderV2.Builders.LogBuilder;
 using DownloaderV2.Builders.LastBlockBuilder;
 
 namespace DownloaderV2;
 
-public class DownloadHandler(BaseDownloaderContext context)
+public class DownloadHandler(BaseDownloaderContext context) : IDownloadHandler
 {
     private readonly SettingDownloader _settingDownloader = new(context);
     private readonly SqlQueryHelper _sqlQueryHelper = new(context);
     private readonly ResultBuilder _resultBuilder = new();
     private IReadOnlyDictionary<long, long> _lastBlockDictionary = new Dictionary<long, long>();
 
-    public async Task<IEnumerable<ResultObject>> HandleAsync()
+    public virtual async Task<IEnumerable<ResultObject>> HandleAsync()
     {
         LogRouter.LogRouter.Initialize(context.GetType());
         _lastBlockDictionary = new LastBlockDownloader().LastBlockDictionary;
