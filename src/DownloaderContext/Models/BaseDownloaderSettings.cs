@@ -1,4 +1,4 @@
-﻿using DownloaderContext.Types;
+﻿using DownloaderContext.Attributes;
 
 namespace DownloaderContext.Models;
 
@@ -40,9 +40,9 @@ public class BaseDownloaderSettings
     public string Key { get; set; } = null!;
 
     /// <summary>
-    /// Representing the name of the route for handling the response.
+    /// Representing the name of the class that use <see cref="ResponseModelAttribute"/> attribute for handling the response.
     /// </summary>
-    public ResponseType ResponseType { get; set; }
+    public string ResponseType { get; set; }
 
     /// <summary>
     /// representing the maximum pagination pages number.
