@@ -1,9 +1,8 @@
 using DownloaderV2.Decoders;
-using DownloaderV2.LogRouter;
-using DownloaderContext.Types;
 using DownloaderV2.Extensions;
 using DownloaderContext.Models;
-using DownloaderV2.Models.ApiCovalent;
+using DownloaderV2.Models.Covalent;
+using static DownloaderV2.LogRouter.LogRouter;
 
 namespace DownloaderV2.Builders.LogBuilder;
 
@@ -12,7 +11,7 @@ public class LogDecoder
     public SavedLogResponse LogResponses { get; }
     public int EventCount => LogResponses.Count;
 
-    public LogDecoder(DownloaderSettings downloaderSettings, IInputData inputData)
+    public LogDecoder(DownloaderSettings downloaderSettings, InputData inputData)
     {
         LogResponses = new SavedLogResponse();
 
@@ -27,10 +26,5 @@ public class LogDecoder
 
             LogResponses.Add(GetLogType(downloaderSettings.ResponseType, new[] { topicDecoder }));
         }
-    }
-
-    private ILogResponse GetLogType(ResponseType responseType, Dictionary<string, DataDecoder>[] dictionaries)
-    {
-        throw new NotImplementedException();
     }
 }

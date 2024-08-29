@@ -1,6 +1,6 @@
-﻿using DownloaderContext.Types;
-using DownloaderContext.Models;
+﻿using DownloaderContext.Models;
 using Microsoft.EntityFrameworkCore;
+using DownloaderContext.Models.Types;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 

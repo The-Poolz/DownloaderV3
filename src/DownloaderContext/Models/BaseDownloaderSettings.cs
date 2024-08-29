@@ -1,4 +1,4 @@
-﻿using DownloaderContext.Types;
+﻿using DownloaderContext.Models.Types;
 
 namespace DownloaderContext.Models;
 

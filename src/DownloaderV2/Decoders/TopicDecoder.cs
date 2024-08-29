@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using DownloaderContext.Models;
-using DownloaderV2.Models.ApiCovalent;
+using DownloaderV2.Models.Covalent;
 
 namespace DownloaderV2.Decoders;
 
 public class TopicDecoder
 {
-    public TopicDecoder(IData data, IEnumerable<DownloaderMapping> downloaderMappings)
+    public TopicDecoder(Data data, IEnumerable<DownloaderMapping> downloaderMappings)
     {
         var source = JObject.FromObject(data);
 

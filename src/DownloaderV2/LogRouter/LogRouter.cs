@@ -1,39 +1,35 @@
 using DownloaderV2.Helpers;
 using DownloaderV2.Decoders;
-using DownloaderContext.Types;
+using DownloaderContext.Models.Types;
 
 namespace DownloaderV2.LogRouter;
 
 public static class LogRouter
 {
-    private static string DefaultClassLocation { get; set; } = null!;
-    private static string ResponseTypesClassLocation { get; set; } = null!;
+    private static string _defaultClassLocation = null!;
+    private static string _responseTypesClassLocation = null!;
 
-    private static readonly Dictionary<ResponseType, PropertySetterBeforeSave> ResponseTypes = new();
-
-    public static void Configure(string defaultClassLocation, string responseTypesClassLocation)
+    public static void Initialize(Type contextType)
     {
-        DefaultClassLocation = defaultClassLocation ?? throw new ArgumentNullException(nameof(defaultClassLocation));
-        ResponseTypesClassLocation = responseTypesClassLocation ?? throw new ArgumentNullException(nameof(responseTypesClassLocation));
+        var assemblyName = contextType.Assembly.GetName().Name;
+        var namespaceName = contextType.Namespace!;
+        _defaultClassLocation = $"{namespaceName}.Models.ResponseModels.{{0}}, {assemblyName}";
+        _responseTypesClassLocation = $"{namespaceName}.Models.ResponseModels.{{0}}, {assemblyName}";
+
+        Console.WriteLine($"DefaultClassLocation: {_defaultClassLocation}");
+        Console.WriteLine($"ResponseTypesClassLocation: {_responseTypesClassLocation}");
     }
 
-    public static void AddResponseType(ResponseType responseType, PropertySetterBeforeSave propertySetter)
-    {
-        ResponseTypes.TryAdd(responseType, propertySetter);
-    }
+    public static readonly IReadOnlyDictionary<ResponseType, PropertySetterBeforeSave> ResponseTypes = new Dictionary<ResponseType, PropertySetterBeforeSave>();
 
-    private static PropertySetterBeforeSave? GetSetterBeforeSave(ResponseType response) => ResponseTypes.ContainsKey(response) ? ResponseTypes[response] : null;
+    private static PropertySetterBeforeSave? GetSetterBeforeSave(ResponseType response) =>
+        ResponseTypes.ContainsKey(response) ? ResponseTypes[response] : null;
 
     public static PreSaveActionBinder GetBinder(ResponseType type)
     {
-        if (string.IsNullOrEmpty(DefaultClassLocation) || string.IsNullOrEmpty(ResponseTypesClassLocation))
-        {
-            throw new InvalidOperationException("LogRouter is not configured. Please call LogRouter.Configure with the correct class locations.");
-        }
-
         var classLocation = ResponseTypes.TryGetValue(type, out var propertySetter)
-            ? string.Format(ResponseTypesClassLocation, propertySetter.DbSetName)
-            : string.Format(DefaultClassLocation, type);
+            ? string.Format(_responseTypesClassLocation, propertySetter.DbSetName)
+            : string.Format(_defaultClassLocation, type);
 
         var responseType = Type.GetType(classLocation) ?? ApplicationLogger.LogAndThrowDynamic(new ArgumentException(string.Format(ExceptionMessages.ClassSpecificationError, classLocation)));
 

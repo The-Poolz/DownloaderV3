@@ -1,4 +1,4 @@
-﻿namespace DownloaderV2.Models.ApiCovalent;
+﻿namespace DownloaderV2.Models.Api;
 
 public interface IPagination
 {
