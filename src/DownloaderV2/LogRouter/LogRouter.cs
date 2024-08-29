@@ -1,46 +1,36 @@
+using System.Reflection;
 using DownloaderV2.Helpers;
 using DownloaderV2.Decoders;
-using DownloaderContext.Models.Types;
+using DownloaderContext.Attributes;
 
 namespace DownloaderV2.LogRouter;
 
 public static class LogRouter
 {
-    private static string _defaultClassLocation = null!;
-    private static string _responseTypesClassLocation = null!;
+    private static Dictionary<string, string> _responseTypes = new();
 
     public static void Initialize(Type contextType)
     {
-        var assemblyName = contextType.Assembly.GetName().Name;
-        var namespaceName = contextType.Namespace!;
-        _defaultClassLocation = $"{namespaceName}.Models.ResponseModels.{{0}}, {assemblyName}";
-        _responseTypesClassLocation = $"{namespaceName}.Models.ResponseModels.{{0}}, {assemblyName}";
-
-        Console.WriteLine($"DefaultClassLocation: {_defaultClassLocation}");
-        Console.WriteLine($"ResponseTypesClassLocation: {_responseTypesClassLocation}");
+        _responseTypes = contextType.Assembly.GetTypes()
+            .Where(x => x.GetCustomAttributes<ResponseModelAttribute>().Any())
+            .ToDictionary(key => key.Name, value => $"{value.FullName}, {contextType.Assembly.GetName().Name}")!;
     }
 
-    public static readonly IReadOnlyDictionary<ResponseType, PropertySetterBeforeSave> ResponseTypes = new Dictionary<ResponseType, PropertySetterBeforeSave>();
-
-    private static PropertySetterBeforeSave? GetSetterBeforeSave(ResponseType response) =>
-        ResponseTypes.ContainsKey(response) ? ResponseTypes[response] : null;
-
-    public static PreSaveActionBinder GetBinder(ResponseType type)
+    public static PreSaveActionBinder GetBinder(string responseModel)
     {
-        var classLocation = ResponseTypes.TryGetValue(type, out var propertySetter)
-            ? string.Format(_responseTypesClassLocation, propertySetter.DbSetName)
-            : string.Format(_defaultClassLocation, type);
+        var classLocation = _responseTypes.FirstOrDefault(x => x.Key == responseModel).Value
+            ?? throw new InvalidOperationException($"Response '{responseModel}' not implement with '{nameof(ResponseModelAttribute)}' attribute.");
 
         var responseType = Type.GetType(classLocation) ?? ApplicationLogger.LogAndThrowDynamic(new ArgumentException(string.Format(ExceptionMessages.ClassSpecificationError, classLocation)));
 
         var genericResponseType = typeof(GenericResponse<>).MakeGenericType(responseType);
 
-        return new PreSaveActionBinder(genericResponseType, GetSetterBeforeSave(type));
+        return new PreSaveActionBinder(genericResponseType, null);
     }
 
-    public static ILogResponse GetLogType(ResponseType type, IEnumerable<IReadOnlyDictionary<string, DataDecoder>> listOfData)
+    public static ILogResponse GetLogType(string responseModel, IEnumerable<IReadOnlyDictionary<string, DataDecoder>> listOfData)
     {
-        var binder = GetBinder(type);
+        var binder = GetBinder(responseModel);
         return (ILogResponse)Activator.CreateInstance(binder.TypeHolder, listOfData, binder.BeforeSave)!;
     }
 }

@@ -1,8 +1,6 @@
 ﻿using DownloaderContext.Models;
 using Microsoft.EntityFrameworkCore;
-using DownloaderContext.Models.Types;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DownloaderContext
 {
@@ -51,7 +49,7 @@ namespace DownloaderContext
             builder.Property(e => e.ContractAddress).HasColumnType("nvarchar(42)");
             builder.Property(e => e.EventHash).HasColumnType("nvarchar(66)");
             builder.Property(e => e.Key).HasColumnType("nvarchar(256)");
-            builder.Property(e => e.ResponseType).HasColumnType("nvarchar(256)").HasConversion(new EnumToStringConverter<ResponseType>());
+            builder.Property(e => e.ResponseType).HasColumnType("nvarchar(256)");
         }
 
         private void ConfigureDownloaderMapping(EntityTypeBuilder<DownloaderMapping> builder)
