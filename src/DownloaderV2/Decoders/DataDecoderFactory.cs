@@ -1,13 +1,15 @@
-﻿using DownloaderV2.Helpers;
+﻿using System.Reflection;
 using Newtonsoft.Json.Linq;
 using DownloaderContext.Models;
-using System.Reflection;
 
 namespace DownloaderV2.Decoders;
 
 public class DataDecoderFactory
 {
     public readonly DataDecoder Decoder;
+    private static readonly Type[] DataDecoderTypes = Assembly.GetExecutingAssembly().GetTypes()
+        .Where(t => t is { IsClass: true, IsAbstract: false } && t.BaseType == typeof(DataDecoder))
+        .ToArray();
 
     public DataDecoderFactory(DownloaderMapping map, JToken source)
     {
@@ -18,9 +20,8 @@ public class DataDecoderFactory
 
     public static DataDecoder GetConverter(string converterName)
     {
-        var executingAssembly = Assembly.GetExecutingAssembly().GetName().Name;
-        var typeName = $"{executingAssembly}.Decoders.DataDecoders.{converterName}, {executingAssembly}";
-        var type = Type.GetType(typeName) ?? ApplicationLogger.LogAndThrowDynamic(new InvalidOperationException(string.Format(ExceptionMessages.DecoderTypeNotFound, converterName)));
-        return (DataDecoder)Activator.CreateInstance(type)!;
+        var converterType = DataDecoderTypes.FirstOrDefault(x => x.Name == converterName) ??
+            throw new InvalidOperationException($"Converter with name '{converterName}' not found.");
+        return (DataDecoder)Activator.CreateInstance(converterType)!;
     }
 }
