@@ -3,9 +3,9 @@ using DownloaderV2.Result;
 using DownloaderV2.Helpers;
 using Net.Utils.TaskManager;
 using DownloaderContext.Models;
-using DownloaderV2.Base;
 using DownloaderV2.Builders.LogBuilder;
 using DownloaderV2.Builders.LastBlockBuilder;
+using DownloaderV2.Builders.DownloadHandlerBuilders;
 
 namespace DownloaderV2;
 
@@ -13,7 +13,7 @@ public class DownloadHandler(BaseDownloaderContext context) : IDownloadHandler
 {
     private readonly SettingDownloader _settingDownloader = new(context);
     private readonly SqlQueryHelper _sqlQueryHelper = new(context);
-    private readonly ResultBuilder _resultBuilder = new();
+    public ResultBuilder ResultBuilder { get; } = new();
     private IReadOnlyDictionary<long, long> _lastBlockDictionary = new Dictionary<long, long>();
 
     public virtual async Task<IEnumerable<ResultObject>> HandleAsync()
@@ -31,8 +31,8 @@ public class DownloadHandler(BaseDownloaderContext context) : IDownloadHandler
         await taskManager.StartAsync();
 
         _sqlQueryHelper.TrySaveChangeAsync();
-        _resultBuilder.PrintResult();
-        return _resultBuilder.Result;
+        ResultBuilder.PrintResult();
+        return ResultBuilder.Result;
     }
 
     private Task HandleContracts(int pageNumber, DownloaderSettings contractSettings, ITaskManager taskManager) => new(() =>
@@ -69,13 +69,13 @@ public class DownloadHandler(BaseDownloaderContext context) : IDownloadHandler
         }
     }
 
-    private void UpdateDownloaderSettings(DownloaderSettings topicSettings, LogDownloader downloader)
+    public void UpdateDownloaderSettings(DownloaderSettings topicSettings, LogDownloader downloader)
     {
         _sqlQueryHelper.UpdateDownloaderSettings(topicSettings, downloader.LastSavedBlock, downloader.ChainLastBlock);
     }
 
-    private void AddResult(DownloaderSettings topicSettings, int eventCount)
+    public void AddResult(DownloaderSettings topicSettings, int eventCount)
     {
-        _resultBuilder.AddResult(new ResultObject().SetSuccess(topicSettings, eventCount));
+        ResultBuilder.AddResult(new ResultObject().SetSuccess(topicSettings, eventCount));
     }
 }

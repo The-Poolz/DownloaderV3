@@ -1,7 +1,7 @@
 ﻿using DownloaderContext;
-using DownloaderV2.Base;
 using DownloaderV2.Result;
 using DownloaderV2.Helpers;
+using DownloaderV2.Builders.DownloadHandlerBuilders;
 
 namespace DownloaderV2
 {

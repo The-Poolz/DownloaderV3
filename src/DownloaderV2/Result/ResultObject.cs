@@ -11,7 +11,7 @@ public class ResultObject
     public ResultObject SetSuccess(DownloaderSettings settings, int count)
     {
         ChainId = settings.ChainId;
-        EventName = settings.ResponseType.ToString();
+        EventName = settings.ResponseType;
         Count = count;
         return this;
     }

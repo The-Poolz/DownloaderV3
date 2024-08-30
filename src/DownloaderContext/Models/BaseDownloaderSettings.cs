@@ -40,7 +40,7 @@ public class BaseDownloaderSettings
     public string Key { get; set; } = null!;
 
     /// <summary>
-    /// Representing the name of the class that use <see cref="ResponseModelAttribute"/> attribute for handling the response.
+    /// Representing the name of the class that use <see cref="ResponseModel"/> attribute for handling the response.
     /// </summary>
     public string ResponseType { get; set; }
 

@@ -18,7 +18,7 @@ internal static class DbMock
         {
             ChainId = 97,
             StartingBlock = 1,
-            EndingBlock = 2,
+            EndingBlock = 100,
             MaxBatchSize = 50000,
             Key = "myKey",
             ResponseType = "SwapBNBParty",

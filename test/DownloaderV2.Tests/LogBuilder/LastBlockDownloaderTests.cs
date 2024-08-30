@@ -3,6 +3,7 @@ using Flurl.Http.Testing;
 using Newtonsoft.Json.Linq;
 using DownloaderV2.Builders;
 using DownloaderV2.Tests.Results.CovalentResults;
+using DownloaderV2.Builders.LastBlockBuilder;
 
 namespace DownloaderV2.Tests.LogBuilder
 {
@@ -58,14 +59,28 @@ namespace DownloaderV2.Tests.LogBuilder
         }
 
         [Fact]
+        public void LastBlockDownloader_ShouldFillLastBlockDictionaryCorrectly()
+        {
+            using var httpTest = new HttpTest();
+
+            httpTest.RespondWith(CovalentResultConst.LastBlockString);
+            var downloader = new LastBlockDownloader();
+
+            var lastBlockDictionary = downloader.LastBlockDictionary;
+
+            lastBlockDictionary.Should().HaveCount(4);
+            lastBlockDictionary[1].Should().Be(17165351);
+            lastBlockDictionary[56].Should().Be(27826734);
+            lastBlockDictionary[42161].Should().Be(86156198);
+            lastBlockDictionary[97].Should().Be(27826734);
+        }
+
+        [Fact]
         public void BaseDownloader_ShouldBuildCorrectUri()
         {
-            var expectedUrl = "https://api.covalenthq.com/v1/chains/status/?key=test_api_key";
-            Environment.SetEnvironmentVariable("LastBlockDownloaderUrl", "https://api.covalenthq.com/v1/chains/status/?key=");
-            Environment.SetEnvironmentVariable("LastBlockKey", "test_api_key");
+            var expectedUrl = $"{LastBlockUrlWithOutKey}{LastBlockApiKey}";
 
             var downloader = new BaseDownloader();
-
             var actualUrl = downloader.GetUri;
 
             actualUrl.Should().Be(expectedUrl);

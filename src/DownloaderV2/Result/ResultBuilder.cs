@@ -4,16 +4,13 @@ namespace DownloaderV2.Result;
 
 public class ResultBuilder
 {
-    public List<ResultObject> Result { get; set; } = new();
+    public List<ResultObject> Result { get; set; } = [];
     public void AddResult(ResultObject result) 
     {
         lock (result) { Result.Add(result); }
     } 
         
-    public void PrintResult()
-    {
-        Console.WriteLine(this);
-    }
+    public void PrintResult() => Console.WriteLine(this);
 
     public override string ToString()
     {
