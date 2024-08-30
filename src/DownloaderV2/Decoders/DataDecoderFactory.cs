@@ -21,7 +21,7 @@ public class DataDecoderFactory
     public static DataDecoder GetConverter(string converterName)
     {
         var converterType = DataDecoderTypes.FirstOrDefault(x => x.Name == converterName) ??
-            throw new InvalidOperationException($"Converter with name '{converterName}' not found.");
+            throw new InvalidOperationException($"Data decoder with name '{converterName}' not found.");
         return (DataDecoder)Activator.CreateInstance(converterType)!;
     }
 }
