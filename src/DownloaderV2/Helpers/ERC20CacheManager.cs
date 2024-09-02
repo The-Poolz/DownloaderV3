@@ -1,6 +1,6 @@
 ﻿using DownloaderV2.Utilities;
-using EnvironmentManager.Extensions;
 using Net.Cache.DynamoDb.ERC20;
+using EnvironmentManager.Extensions;
 using Net.Cache.DynamoDb.ERC20.Models;
 
 namespace DownloaderV2.Helpers;

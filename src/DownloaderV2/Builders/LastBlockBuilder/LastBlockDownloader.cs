@@ -1,4 +1,5 @@
 ﻿using DownloaderV2.Helpers;
+using DownloaderV2.Helpers.Logger;
 using DownloaderV2.Models.LastBlock;
 
 namespace DownloaderV2.Builders.LastBlockBuilder;

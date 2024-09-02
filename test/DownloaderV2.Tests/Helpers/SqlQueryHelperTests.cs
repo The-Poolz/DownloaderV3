@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using Moq;
+using FluentAssertions;
 using DownloaderContext;
 using DownloaderV2.Helpers;
+using DownloaderV2.Helpers.Logger;
 
 namespace DownloaderV2.Tests.Helpers
 {
@@ -8,9 +10,13 @@ namespace DownloaderV2.Tests.Helpers
     {
         private readonly BaseDownloaderContext _context;
         private readonly SqlQueryHelper _sqlQueryHelper;
+        private readonly Mock<ILogger> _mockLogger;
 
         public SqlQueryHelperTests()
         {
+            _mockLogger = new Mock<ILogger>();
+            ApplicationLogger.Initialize(_mockLogger.Object);
+
             _context = DbMock.CreateMockContextAsync().Result;
             _sqlQueryHelper = new SqlQueryHelper(_context);
         }
@@ -54,5 +60,19 @@ namespace DownloaderV2.Tests.Helpers
             originalEndingBlock.Should().NotBe(200);
         }
 
+        [Fact]
+        public void TrySaveChangeAsync_ShouldLogAndThrow_InvalidOperationException()
+        {
+            var settings = _context.DownloaderSettings.First(s => s.ChainId == 97);
+
+            settings.ChainId = 98;
+
+            var act = () => _sqlQueryHelper.TrySaveChangeAsync();
+
+            var exception = Assert.Throws<InvalidOperationException>(() => _sqlQueryHelper.TrySaveChangeAsync());
+            exception.Should().NotBeNull();
+
+            _mockLogger.Verify(logger => logger.LogCritical(It.IsAny<string>()), Times.Once);
+        }
     }
 }

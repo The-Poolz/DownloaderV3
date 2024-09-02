@@ -1,6 +1,9 @@
 ﻿using FluentAssertions;
 using DownloaderV2.Tests.Results;
 using DownloaderV2.Tests.Results.DbResults;
+using DownloaderContext.Models;
+using Moq;
+using DownloaderV2.Builders.LogBuilder;
 
 namespace DownloaderV2.Tests
 {
@@ -40,5 +43,18 @@ namespace DownloaderV2.Tests
                 ro.Count == expectedResult.Count
             );
         }
+
+        /*[Fact]
+        public void UpdateDownloaderSettings_ShouldCallSqlQueryHelperWithCorrectParameters()
+        {
+            _downloadHandler.UpdateDownloaderSettings(DownloaderSettingsResult.SwapBNBParty1, _logDownloader);
+
+            // Assert
+            _mockSqlQueryHelper.Verify(helper => helper.UpdateDownloaderSettings(
+                It.Is<DownloaderSettings>(settings => settings == _downloaderSettings),
+                It.Is<long>(savedBlock => savedBlock == _logDownloader.LastSavedBlock),
+                It.Is<long>(chainBlock => chainBlock == _logDownloader.ChainLastBlock)
+            ), Times.Once);
+        }*/
     }
 }

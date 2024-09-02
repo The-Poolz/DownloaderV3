@@ -1,6 +1,7 @@
 ﻿using Flurl.Http;
 using DownloaderV2.Helpers;
 using Newtonsoft.Json.Linq;
+using DownloaderV2.Helpers.Logger;
 
 namespace DownloaderV2.HttpFlurlClient;
 

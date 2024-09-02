@@ -1,5 +1,5 @@
 ﻿using UrlFiller.Resolver;
-using DownloaderV2.Helpers;
+using DownloaderV2.Helpers.Logger;
 
 namespace DownloaderV2.Builders.LogBuilder.Resolvers;
 

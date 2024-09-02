@@ -1,6 +1,7 @@
 ﻿using DownloaderV2.Helpers;
 using Newtonsoft.Json.Linq;
 using Nethereum.Hex.HexTypes;
+using DownloaderV2.Helpers.Logger;
 using System.Text.RegularExpressions;
 
 namespace DownloaderV2.Decoders;

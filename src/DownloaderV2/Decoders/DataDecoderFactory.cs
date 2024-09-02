@@ -1,7 +1,8 @@
-﻿using DownloaderV2.Helpers;
+﻿using System.Reflection;
+using DownloaderV2.Helpers;
 using Newtonsoft.Json.Linq;
 using DownloaderContext.Models;
-using System.Reflection;
+using DownloaderV2.Helpers.Logger;
 
 namespace DownloaderV2.Decoders;
 

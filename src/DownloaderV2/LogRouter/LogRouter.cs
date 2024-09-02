@@ -1,6 +1,7 @@
 using System.Reflection;
 using DownloaderV2.Helpers;
 using DownloaderV2.Decoders;
+using DownloaderV2.Helpers.Logger;
 using DownloaderContext.Attributes;
 
 namespace DownloaderV2.LogRouter;

@@ -2,6 +2,7 @@
 using UrlFiller.Resolver;
 using DownloaderV2.Helpers;
 using DownloaderContext.Models;
+using DownloaderV2.Helpers.Logger;
 using DownloaderV2.Models.Covalent;
 using DownloaderV2.HttpFlurlClient;
 using DownloaderV2.Builders.LogBuilder.Resolvers;
@@ -11,8 +12,8 @@ namespace DownloaderV2.Builders.LogBuilder;
 public class LogDownloader : CalculatedValueResolver
 {
     public InputData DownloadedContractData { get; }
-    private string UrlSet { get; set; }
-    private URLParser Url { get; set; }
+    public string UrlSet { get;}
+    public URLParser Url { get;}
     public long LastSavedBlock { get; set; }
     public long ChainLastBlock { get; }
 

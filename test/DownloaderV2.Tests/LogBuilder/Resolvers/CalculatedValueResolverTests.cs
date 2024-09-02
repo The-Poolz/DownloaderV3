@@ -52,5 +52,25 @@ public class CalculatedValueResolverTests
         var resolver = new CalculatedValueResolver(lastBlockDictionary[downloaderSettings.ChainId], Convert.ToInt64(chainSettings[downloaderSettings.ChainId].BlockPerSecond * chainSettings[downloaderSettings.ChainId].DownloadTimeDelay), downloaderSettings);
 
         resolver.EndingBlock.Should().Be(10200);
+        resolver.IsValidateStartingBlock.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IsValidateStartingBlock_ShouldReturnFalse()
+    {
+        var downloaderSettings = new DownloaderSettings { StartingBlock = 1000, MaxBatchSize = 10000, ChainId = 1 };
+        var lastBlockDictionary = new Dictionary<long, long> { { 1, 900 } };
+        var chainSettings = new Dictionary<long, ChainInfo> { { 1, new ChainInfo { BlockPerSecond = 1, DownloadTimeDelay = 500 } } };
+
+        var resolver = new CalculatedValueResolver(
+            lastBlockDictionary[downloaderSettings.ChainId],
+            Convert.ToInt64(chainSettings[downloaderSettings.ChainId].BlockPerSecond * chainSettings[downloaderSettings.ChainId].DownloadTimeDelay),
+            downloaderSettings
+        );
+
+        resolver.IsValidateStartingBlock.Should().BeFalse();
+        resolver.CalculateEndingBlock.Should().Be(1000);
+        resolver.ComputeLastBlock.Should().Be(400);
+        resolver.BatchSize.Should().Be(10000);
     }
 }

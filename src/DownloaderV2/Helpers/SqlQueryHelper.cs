@@ -1,6 +1,6 @@
 ﻿using DownloaderContext;
 using DownloaderContext.Models;
-using Microsoft.EntityFrameworkCore;
+using DownloaderV2.Helpers.Logger;
 
 namespace DownloaderV2.Helpers;
 
@@ -32,25 +32,9 @@ public class SqlQueryHelper(BaseDownloaderContext context)
                 context.SaveChanges();
             }
         }
-        catch (DbUpdateException ex)
+        catch (Exception ex)
         {
-            LogPendingChanges();
             ApplicationLogger.LogAndThrow(ex);
-        }
-    }
-
-    private void LogPendingChanges()
-    {
-        foreach (var entry in context.ChangeTracker.Entries())
-        {
-            Console.WriteLine($"Entity: {entry.Entity.GetType().Name}, State: {entry.State}");
-
-            foreach (var property in entry.CurrentValues.Properties)
-            {
-                var propName = property.Name;
-                var propValue = entry.CurrentValues[propName];
-                ApplicationLogger.Log(($"Property: {propName}, Value: {propValue}"));
-            }
         }
     }
 }
