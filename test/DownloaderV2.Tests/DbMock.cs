@@ -1,18 +1,18 @@
-﻿using DownloaderContext;
-using DownloaderContext.Models;
+﻿using DownloaderContext.Models;
+using DownloaderV2.Tests.Results.DbResults.CustomDownloaderContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace DownloaderV2.Tests;
 
 internal static class DbMock
 {
-    public static async Task<BaseDownloaderContext> CreateMockContextAsync()
+    public static async Task<CustomDownloaderContext> CreateMockContextAsync()
     {
-        var options = new DbContextOptionsBuilder<BaseDownloaderContext>()
+        var options = new DbContextOptionsBuilder<CustomDownloaderContext>()
             .UseInMemoryDatabase(databaseName: "TestDb" + Guid.NewGuid().ToString())
             .Options;
 
-        var context = new BaseDownloaderContext(options);
+        var context = new CustomDownloaderContext(options);
 
         var swapBNBParty = new DownloaderSettings
         {

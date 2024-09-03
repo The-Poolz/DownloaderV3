@@ -4,6 +4,8 @@ using DownloaderV2.Tests.Results.DbResults;
 using DownloaderContext.Models;
 using Moq;
 using DownloaderV2.Builders.LogBuilder;
+using DownloaderV2.Helpers;
+using DownloaderContext;
 
 namespace DownloaderV2.Tests
 {
@@ -14,6 +16,8 @@ namespace DownloaderV2.Tests
         private const string ApiUrl = "https://api.covalenthq.com/v1/{{chainId}}/tokens/{{contractAddress}}/token_holders_v2/?page-size=100&page-number=0&key={{apiKey}}";
 
         private readonly DownloadHandler _downloadHandler;
+        private readonly Mock<SqlQueryHelper> _mockSqlQueryHelper;
+        private readonly BaseDownloaderContext _context;
 
         public DownloadHandlerTests()
         {
@@ -21,10 +25,15 @@ namespace DownloaderV2.Tests
             Environment.SetEnvironmentVariable("LastBlockDownloaderUrl", LastBlockUrlWithOutKey);
             Environment.SetEnvironmentVariable("ApiUrl", ApiUrl);
 
-            var mockContext = DbMock.CreateMockContextAsync().Result;
+            _context = DbMock.CreateMockContextAsync().Result;
 
-            _downloadHandler = new DownloadHandler(mockContext);
+            _mockSqlQueryHelper = new Mock<SqlQueryHelper>(_context);
+
+            _downloadHandler = new DownloadHandler(_context);
+
+            _mockSqlQueryHelper.Setup(s => s.UpdateDownloaderSettings(It.IsAny<DownloaderSettings>(), It.IsAny<long>(), It.IsAny<long>()));
         }
+
 
         [Fact]
         public void AddResult_ShouldStoreCorrectDataInResultBuilder()
@@ -43,18 +52,5 @@ namespace DownloaderV2.Tests
                 ro.Count == expectedResult.Count
             );
         }
-
-        /*[Fact]
-        public void UpdateDownloaderSettings_ShouldCallSqlQueryHelperWithCorrectParameters()
-        {
-            _downloadHandler.UpdateDownloaderSettings(DownloaderSettingsResult.SwapBNBParty1, _logDownloader);
-
-            // Assert
-            _mockSqlQueryHelper.Verify(helper => helper.UpdateDownloaderSettings(
-                It.Is<DownloaderSettings>(settings => settings == _downloaderSettings),
-                It.Is<long>(savedBlock => savedBlock == _logDownloader.LastSavedBlock),
-                It.Is<long>(chainBlock => chainBlock == _logDownloader.ChainLastBlock)
-            ), Times.Once);
-        }*/
     }
 }

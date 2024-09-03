@@ -6,7 +6,7 @@ namespace DownloaderV2.Helpers;
 
 public class SqlQueryHelper(BaseDownloaderContext context)
 {
-    public void UpdateDownloaderSettings(DownloaderSettings settings, long endingBlock, long latestBlock)
+    public virtual void UpdateDownloaderSettings(DownloaderSettings settings, long endingBlock, long latestBlock)
     {
         lock (context)
         {

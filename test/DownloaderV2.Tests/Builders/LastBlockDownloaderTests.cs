@@ -2,10 +2,10 @@
 using Flurl.Http.Testing;
 using Newtonsoft.Json.Linq;
 using DownloaderV2.Builders;
-using DownloaderV2.Tests.Results.CovalentResults;
 using DownloaderV2.Builders.LastBlockBuilder;
+using DownloaderV2.Tests.Results.CovalentResults;
 
-namespace DownloaderV2.Tests.LogBuilder
+namespace DownloaderV2.Tests.Builders
 {
     public class LastBlockDownloaderTests
     {

@@ -2,7 +2,7 @@
 using DownloaderContext.Models;
 using DownloaderV2.Builders.LogBuilder.Resolvers;
 
-namespace DownloaderV2.Tests.LogBuilder.Resolvers;
+namespace DownloaderV2.Tests.Builders.LogBuilder.Resolvers;
 
 public class CalculatedValueResolverTests
 {

@@ -44,6 +44,8 @@ namespace DownloaderV2.Tests.Helpers
         [Fact]
         public void Log_ShouldCallLoggerLog()
         {
+            ApplicationLogger.Initialize(_mockLogger.Object);
+
             var message = "This is a log message";
 
             ApplicationLogger.Log(message);
