@@ -42,7 +42,7 @@ public class BaseDownloaderSettings
     /// <summary>
     /// Representing the name of the class that use <see cref="ResponseModelAttribute"/> attribute for handling the response.
     /// </summary>
-    public string ResponseType { get; set; }
+    public string ResponseType { get; set; } = null!;
 
     /// <summary>
     /// representing the maximum pagination pages number.

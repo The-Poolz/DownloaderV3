@@ -17,6 +17,7 @@ public class DownloadHandler(BaseDownloaderContext context)
 
     public async Task<IEnumerable<ResultObject>> HandleAsync()
     {
+        ApplicationLogger.Initialize();
         LogRouter.LogRouter.Initialize(context.GetType());
         _lastBlockDictionary = new LastBlockDownloader().LastBlockDictionary;
         var uniqueEvents = _settingDownloader.DownloaderSettings
