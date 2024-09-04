@@ -14,7 +14,9 @@ public class LogDownloaderTest
     {
         using var httpTest = new HttpTest();
 
+#pragma warning disable xUnit1031
         var downloaderSettings = DbMock.CreateMockContextAsync().Result;
+#pragma warning restore xUnit1031
         var downloaderSetting = downloaderSettings.DownloaderSettings.First();
 
         var lastBlockDictionary = new Dictionary<long, long> { { 97, 1000 } };

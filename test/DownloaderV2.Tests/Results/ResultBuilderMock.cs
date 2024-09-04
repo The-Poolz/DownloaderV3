@@ -9,14 +9,13 @@ public static class ResultBuilderMock
     [
         new ResultObject
         {
-            ChainId = DownloaderSettingsResult.SwapBNBParty1.ChainId,
+            ChainId = DownloaderSettingsResult.SwapBNBPartyV1.ChainId,
             EventName = "SwapBNBParty",
             Count = 10
         },
-
         new ResultObject
         {
-            ChainId = DownloaderSettingsResult.SwapBNBParty2.ChainId,
+            ChainId = DownloaderSettingsResult.SwapBNBPartyV2.ChainId,
             EventName = "SwapBNBParty",
             Count = 1
         }
@@ -24,6 +23,6 @@ public static class ResultBuilderMock
 
     public static readonly Dictionary<long, ResultObject> ResultSettings = new()
     {
-        { DownloaderSettingsResult.SwapBNBParty1.ChainId, ResultList[0] }
+        { DownloaderSettingsResult.SwapBNBPartyV1.ChainId, ResultList[0] }
     };
 }

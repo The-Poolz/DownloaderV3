@@ -26,7 +26,7 @@ namespace DownloaderV2.Tests.Models
 
             for (int i = 0; i < expectedValues.Length; i++)
             {
-                var item = response.Data.Items[i];
+                var item = response.Data.Items![i];
                 item.ChainId.Should().Be(expectedValues[i].ChainId);
                 item.BlockHeight.Should().Be(expectedValues[i].BlockHeight);
                 item.Name.Should().Be(expectedValues[i].Name);

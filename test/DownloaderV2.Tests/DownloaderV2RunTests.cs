@@ -28,7 +28,7 @@ namespace DownloaderV2.Tests
             var mappings = context.DownloaderMapping.ToList();
 
             Assert.NotEmpty(settings);
-            Assert.Equal(1, settings.Count);
+            Assert.Single(settings);
             Assert.Equal(13, mappings.Count);
         }
 

@@ -11,16 +11,18 @@ namespace DownloaderV2.Tests.Builders.LogBuilder
         [Fact]
         public void LogDecoder_ShouldDecodeLogsCorrectly_WithRealData()
         {
+#pragma warning disable xUnit1031
             var context = DbMock.CreateMockContextAsync().Result;
+#pragma warning restore xUnit1031
             LogRouter.LogRouter.Initialize(context.GetType());
 
-            var downloaderSettings = DbMock.CreateMockContextAsync().Result.DownloaderSettings.First(s =>
+            var downloaderSettings = context.DownloaderSettings.First(s =>
                 s.ResponseType == "SwapBNBParty");
 
             var inputData = JsonConvert.DeserializeObject<InputData>(CovalentResultConst.SwapBNBPartyString);
 
             
-            var logDecoder = new LogDecoder(downloaderSettings, inputData);
+            var logDecoder = new LogDecoder(downloaderSettings, inputData!);
 
             logDecoder.LogResponses.Should().NotBeNull();
             logDecoder.EventCount.Should().Be(1);
