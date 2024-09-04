@@ -26,8 +26,8 @@ public class DataDecoderFactoryTests
     public DataDecoderFactoryTests()
     {
         Environment.SetEnvironmentVariable("AWS_REGION", "us-east-2");
-        Environment.SetEnvironmentVariable("ApiUrl", "https://Test");
-        Environment.SetEnvironmentVariable("LastBlockKey", "covalent_key_here");
+        Environment.SetEnvironmentVariable("ApiUrl", "https://test?");
+        Environment.SetEnvironmentVariable("LastBlockKey", "key");
 
         _mockWeb3 = new Mock<IWeb3>();
         _mockEthApiContractService = new Mock<IEthApiContractService>();
