@@ -4,7 +4,7 @@ namespace DownloaderV2.Tests.Results.DbResults;
 
 public static class DownloaderSettingsResult
 {
-    private const string Url = "https://api.covalenthq.com/v1/[ChainId]/events/address/[ContractAddress]/?starting-block=[StartingBlock]&ending-block=[EndingBlock]&page-number=[PageNumber]&page-size=[MaxPageNumber]&key=[Key]";
+    private const string Url = "https://api.covalenthq.com/v1/[ChainId]/events/address/test";
 
     public static readonly DownloaderSettings SwapBNBPartyV1 = new()
     {
