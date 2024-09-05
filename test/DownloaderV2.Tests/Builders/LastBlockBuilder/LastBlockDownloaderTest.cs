@@ -1,5 +1,5 @@
 ﻿using DownloaderV2.Builders.LastBlockBuilder;
-using DownloaderV2.Builders.LastBlockBuilder.LastBlockService;
+using DownloaderV2.Builders.LastBlockBuilder.SourcePage;
 using DownloaderV2.Models.LastBlock;
 using Moq;
 using Newtonsoft.Json;
@@ -11,14 +11,14 @@ namespace DownloaderV2.Tests.Builders.LastBlockBuilder
         [Fact]
         public async Task LastBlockDictionary_ReturnsCorrectData()
         {
-            var mockLastBlockService = new Mock<ILastBlockService>();
+            var mockLastBlockService = new Mock<GetSourcePage>();
             var expectedDictionary = new Dictionary<long, long>
             {
                 { 1, 100 },
                 { 2, 200 }
             };
 
-            mockLastBlockService.Setup(service => service.FetchLastBlockDataAsync())
+            mockLastBlockService.Setup(service => service.FetchDataAsync())
                 .ReturnsAsync(expectedDictionary);
 
             var downloader = new LastBlockDownloader(mockLastBlockService.Object);

@@ -5,7 +5,7 @@ using Net.Utils.TaskManager;
 using DownloaderContext.Models;
 using DownloaderV2.Builders.LogBuilder;
 using DownloaderV2.Builders.LastBlockBuilder;
-using DownloaderV2.Builders.LastBlockBuilder.LastBlockService;
+using DownloaderV2.Builders.LastBlockBuilder.SourcePage;
 
 namespace DownloaderV2;
 
@@ -20,8 +20,7 @@ public class DownloadHandler(BaseDownloaderContext context)
     {
         LogRouter.LogRouter.Initialize(context.GetType());
 
-        // TODO: This line is commented out because we can get (new CovalentLastBlockService()) it from ctor.
-        _lastBlockDictionary = await new LastBlockDownloader(new CovalentLastBlockService()).LastBlockDictionary;
+        _lastBlockDictionary = await new LastBlockDownloader(new GetLastBlock()).LastBlockDictionary;
         var uniqueEvents = _settingDownloader.DownloaderSettings
             .GroupBy(x => new { x.ChainId, x.ContractAddress, x.EventHash })
             .Select(group => group.First())

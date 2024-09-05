@@ -12,14 +12,14 @@ namespace DownloaderV2.Tests.Results
             var settings = new DownloaderSettings
             {
                 ChainId = 1,
-                ResponseType = "TestEvent"
+                ResponseType = "SomeEvent"
             };
             var eventCount = 5;
 
             var resultObject = new ResultObject().SetSuccess(settings, eventCount);
 
             resultObject.ChainId.Should().Be(1);
-            resultObject.EventName.Should().Be("TestEvent");
+            resultObject.EventName.Should().Be("SomeEvent");
             resultObject.Count.Should().Be(5);
         }
 
@@ -51,8 +51,8 @@ namespace DownloaderV2.Tests.Results
 
             var resultString = resultBuilder.ToString();
 
-            resultString.Should().Contain("| 10 saved | ChainID     97 | SwapBNBParty\n");
-            resultString.Should().Contain("| 1 saved | ChainID     97 | SwapBNBParty\n");
+            resultString.Should().Contain("| 10 saved | ChainID     97 | SomeEvent\n");
+            resultString.Should().Contain("| 1 saved | ChainID     97 | SomeAnotherEvent\n");
         }
     }
 }
