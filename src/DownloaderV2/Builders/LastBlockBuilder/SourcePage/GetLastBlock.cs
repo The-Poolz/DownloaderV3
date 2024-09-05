@@ -1,15 +1,23 @@
-﻿using DownloaderV2.Helpers;
+﻿using Newtonsoft.Json.Linq;
+using DownloaderV2.Helpers;
+using DownloaderV2.Utilities;
 using DownloaderV2.HttpFlurlClient;
 using DownloaderV2.Models.LastBlock;
-using DownloaderV2.Utilities;
 using EnvironmentManager.Extensions;
-using Newtonsoft.Json.Linq;
 
 namespace DownloaderV2.Builders.LastBlockBuilder.SourcePage;
 
 public class GetLastBlock(string getUri) : GetSourcePage(getUri)
 {
     public GetLastBlock() : this($"{Environments.LastBlockDownloaderUrl.Get<string>()}{Environments.LastBlockKey.Get<string>()}") { }
+
+    public override async Task<Dictionary<long, long>> FetchDataAsync()
+    {
+        var jsonData = await GetResponseAsync(GetUri);
+        var downloadedData = DeserializeResponse(jsonData!);
+
+        return PopulateDataDictionary(downloadedData);
+    }
 
     public override async Task<JToken?> GetResponseAsync(string uri) => await Request.CovalentResponse(uri);
 

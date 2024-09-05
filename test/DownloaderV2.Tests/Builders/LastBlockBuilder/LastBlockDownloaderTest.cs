@@ -8,10 +8,16 @@ namespace DownloaderV2.Tests.Builders.LastBlockBuilder
 {
     public class LastBlockDownloaderTest
     {
+        public LastBlockDownloaderTest()
+        {
+            Environment.SetEnvironmentVariable("LastBlockDownloaderUrl", "https://api?");
+            Environment.SetEnvironmentVariable("LastBlockKey", "key");
+        }
+
         [Fact]
         public async Task LastBlockDictionary_ReturnsCorrectData()
         {
-            var mockLastBlockService = new Mock<GetSourcePage>();
+            var mockLastBlockService = new Mock<GetLastBlock>();
             var expectedDictionary = new Dictionary<long, long>
             {
                 { 1, 100 },

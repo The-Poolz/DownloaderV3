@@ -7,13 +7,7 @@ public abstract class GetSourcePage(string getUri)
 {
     public readonly string GetUri = getUri;
 
-    public async Task<Dictionary<long, long>> FetchDataAsync()
-    {
-        var jsonData = await GetResponseAsync(GetUri);
-        var downloadedData = DeserializeResponse(jsonData!);
-
-        return PopulateDataDictionary(downloadedData);
-    }
+    public abstract Task<Dictionary<long, long>> FetchDataAsync();
 
     public abstract Task<JToken?> GetResponseAsync(string uri);
 
