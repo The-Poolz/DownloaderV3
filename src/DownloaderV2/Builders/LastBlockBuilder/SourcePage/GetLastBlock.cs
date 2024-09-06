@@ -7,8 +7,10 @@ using EnvironmentManager.Extensions;
 
 namespace DownloaderV2.Builders.LastBlockBuilder.SourcePage;
 
-public class GetLastBlock(string getUri) : GetSourcePage(getUri)
+public class GetLastBlock(string getUri) : GetSourcePage
 {
+    public override string GetUri { get; } = getUri;
+
     public GetLastBlock() : this($"{Environments.LastBlockDownloaderUrl.Get<string>()}{Environments.LastBlockKey.Get<string>()}") { }
 
     public override async Task<Dictionary<long, long>> FetchDataAsync()

@@ -3,9 +3,9 @@ using DownloaderV2.Models.LastBlock;
 
 namespace DownloaderV2.Builders.LastBlockBuilder.SourcePage;
 
-public abstract class GetSourcePage(string getUri)
+public abstract class GetSourcePage
 {
-    public readonly string GetUri = getUri;
+    public abstract string GetUri { get; }
 
     public abstract Task<Dictionary<long, long>> FetchDataAsync();
 

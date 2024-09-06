@@ -20,7 +20,10 @@ public class DownloadHandler(BaseDownloaderContext context)
     {
         LogRouter.LogRouter.Initialize(context.GetType());
 
-        _lastBlockDictionary = await new LastBlockDownloader(new GetLastBlock()).LastBlockDictionary;
+        // TODO: From ServiceProvider in the next step
+        var lastBlockSource = LastBlockSource.GetInstance(new GetLastBlock());
+        _lastBlockDictionary = await lastBlockSource.LastBlockDictionary;
+
         var uniqueEvents = _settingDownloader.DownloaderSettings
             .GroupBy(x => new { x.ChainId, x.ContractAddress, x.EventHash })
             .Select(group => group.First())
