@@ -2,8 +2,6 @@
 
 public static class ApplicationLogger
 {
-    public static void Initialize() { }
-
     public static void LogAndThrow(Exception ex, string additionalMessage = "")
     {
         Console.WriteLine($"CRITICAL: {ex} {additionalMessage} Exception: {ex.Message} StackTrace: {ex.StackTrace}");
