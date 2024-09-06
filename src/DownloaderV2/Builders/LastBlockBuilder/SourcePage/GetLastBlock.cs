@@ -9,30 +9,29 @@ namespace DownloaderV2.Builders.LastBlockBuilder.SourcePage;
 
 public class GetLastBlock(string getUri) : GetSourcePage
 {
-    public override string GetUri { get; } = getUri;
+    public string GetUri { get; } = getUri;
 
     public GetLastBlock() : this($"{Environments.LastBlockDownloaderUrl.Get<string>()}{Environments.LastBlockKey.Get<string>()}") { }
 
     public override async Task<Dictionary<long, long>> FetchDataAsync()
     {
         var jsonData = await GetResponseAsync(GetUri);
-        var downloadedData = DeserializeResponse(jsonData!);
-
-        return PopulateDataDictionary(downloadedData);
+        return ParseResponse(jsonData!);
     }
 
     public override async Task<JToken?> GetResponseAsync(string uri) => await Request.CovalentResponse(uri);
 
-    public override LastBlockResponse DeserializeResponse(JToken jsonData)
+    public override Dictionary<long, long> ParseResponse(JToken jsonData)
     {
         var lastBlockData = jsonData.ToObject<LastBlockResponse>();
 
-        return lastBlockData ?? ApplicationLogger.LogAndThrowDynamic(new InvalidOperationException(ExceptionMessages.FailedToRetrieveLastBlockData));
-    }
+        if (lastBlockData == null)
+        {
+            ApplicationLogger.LogAndThrowDynamic(new InvalidOperationException(ExceptionMessages.FailedToRetrieveLastBlockData));
+            return new Dictionary<long, long>();
+        }
 
-    public override Dictionary<long, long> PopulateDataDictionary(LastBlockResponse downloadedLastBlockData)
-    {
-        return downloadedLastBlockData.Data.Items?
+        return lastBlockData.Data.Items?
                    .ToDictionary(item => item.ChainId, item => item.BlockHeight)
                ?? new Dictionary<long, long>();
     }
