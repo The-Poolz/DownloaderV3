@@ -145,7 +145,7 @@ public class DataDecoderFactoryTests
         static void TestCode() => GetDecoder(CreateMapping("RawDataDecoder", "$#1"), new JValue(RawTopicData));
 
         var exception = Assert.Throws<InvalidOperationException>(TestCode);
-        Assert.Equal("Decoder type  not found.", exception.Message);
+        Assert.Equal("Data decoder with name '' not found.", exception.Message);
     }
 
     [Fact]
