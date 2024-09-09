@@ -1,6 +1,6 @@
 ﻿using EnvironmentManager.Attributes;
 
-namespace DownloaderV2.Utilities
+namespace SourceLastBlock.Utilities
 {
     /// <summary>
     /// Enum for environment variable keys.
@@ -11,6 +11,6 @@ namespace DownloaderV2.Utilities
         LastBlockKey,
 
         [EnvironmentVariable(isRequired: true)]
-        ApiUrl
+        LastBlockDownloaderUrl,
     }
 }

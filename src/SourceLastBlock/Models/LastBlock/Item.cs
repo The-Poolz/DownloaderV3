@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace DownloaderV2.Models.LastBlock;
+namespace SourceLastBlock.Models.LastBlock;
 
 public class Item
 {

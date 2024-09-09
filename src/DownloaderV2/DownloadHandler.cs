@@ -5,11 +5,11 @@ using Net.Utils.TaskManager;
 using DownloaderContext.Models;
 using DownloaderV2.Builders.LogBuilder;
 using DownloaderV2.Builders.LastBlockBuilder;
-using DownloaderV2.Builders.LastBlockBuilder.SourcePage;
+using SourceLastBlock.AbstractClass;
 
 namespace DownloaderV2;
 
-public class DownloadHandler(BaseDownloaderContext context)
+public class DownloadHandler(BaseDownloaderContext context, GetSourcePage sourcePage)
 {
     private readonly SettingDownloader _settingDownloader = new(context);
     private readonly SqlQueryHelper _sqlQueryHelper = new(context);
@@ -18,11 +18,11 @@ public class DownloadHandler(BaseDownloaderContext context)
 
     public async Task<IEnumerable<ResultObject>> HandleAsync()
     {
-        LogRouter.LogRouter.Initialize(context.GetType());
-
         // TODO: From ServiceProvider in the next step
-        var lastBlockSource = LastBlockSource.GetInstance(new GetLastBlock());
-        _lastBlockDictionary = await lastBlockSource.LastBlockDictionary;
+        LogRouter.LogRouter.Initialize(context.GetType());
+        LastBlockSource.Initialize(sourcePage);
+
+        _lastBlockDictionary = await LastBlockSource.Instance.LastBlockDictionary;
 
         var uniqueEvents = _settingDownloader.DownloaderSettings
             .GroupBy(x => new { x.ChainId, x.ContractAddress, x.EventHash })
