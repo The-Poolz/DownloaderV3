@@ -6,7 +6,7 @@ using SourceLastBlock.HttpFlurlClient;
 
 namespace SourceLastBlock.Tests
 {
-    public class GetLastBlockTests
+    public class GetLastBlockTests : IDisposable
     {
         private readonly HttpTest _httpTest;
         public GetLastBlockTests()
@@ -17,10 +17,7 @@ namespace SourceLastBlock.Tests
             Environment.SetEnvironmentVariable("LastBlockKey", "key");
         }
 
-        public void Dispose()
-        {
-            _httpTest.Dispose(); // Очищаем ресурсы после каждого теста
-        }
+        public void Dispose() => _httpTest.Dispose();
 
         [Fact]
         public async Task GetResponseAsync_ShouldReturnValidJToken()
