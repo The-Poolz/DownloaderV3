@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Flurl.Http.Testing;
-using Newtonsoft.Json.Linq;
 using SourceLastBlock.Helpers;
 using SourceLastBlock.HttpFlurlClient;
 
@@ -20,24 +19,24 @@ namespace SourceLastBlock.Tests
         public void Dispose() => _httpTest.Dispose();
 
         [Fact]
-        public async Task GetResponseAsync_ShouldReturnValidJToken()
+        public  void GetResponse_ShouldReturnValidJToken()
         {
             var getLastBlock = new GetLastBlock();
             var fakeJsonResponse = "{\"data\": { \"items\": [{\"ChainId\": 1, \"BlockHeight\": 100}, {\"ChainId\": 2, \"BlockHeight\": 200}] }}";
 
             _httpTest.RespondWith(fakeJsonResponse);
 
-            var result = await getLastBlock.GetResponseAsync();
+            var result = getLastBlock.GetResponse();
 
             result.Should().NotBeNull();
-            result.Should().BeOfType<JObject>();
-            result!.ToString().Should().Be(JToken.Parse(fakeJsonResponse).ToString());
+            result.Should().BeOfType<string>();
+            result!.Should().Be(fakeJsonResponse);
         }
 
         [Fact]
         public void ParseResponse_ValidJson_ShouldReturnCorrectDictionary()
         {
-            var jsonData = JToken.Parse("{\"data\":{\"items\":[{\"chain_id\":1,\"synced_block_height\":100}]}}");
+            var jsonData = "{\"data\":{\"items\":[{\"chain_id\":1,\"synced_block_height\":100}]}}";
             var expectedDictionary = new Dictionary<long, long>
             {
                 { 1, 100 }
@@ -53,7 +52,7 @@ namespace SourceLastBlock.Tests
         [Fact]
         public void ParseResponse_InvalidJson_ThrowsException()
         {
-            var jsonData = JToken.Parse("{\"unexpected_field\": 1}");
+            var jsonData = "{\"unexpected_field\": 1}";
             var service = new GetLastBlock();
 
             Action act = () => service.ParseResponse(jsonData);
@@ -69,11 +68,11 @@ namespace SourceLastBlock.Tests
 
             Action act = () => getLastBlock.ParseResponse(null!);
 
-            act.Should().Throw<NullReferenceException>().WithMessage("Object reference not set to an instance of an object.");
+            act.Should().Throw<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'value')");
         }
 
         [Fact]
-        public async Task FetchDataAsync_ShouldReturnParsedDictionary()
+        public void FetchData_ShouldReturnParsedDictionary()
         {
             var getLastBlock = new GetLastBlock();
             var fakeJsonResponse = "{\"data\": { \"items\": [{\"chain_id\": 1, \"synced_block_height\": 100}, {\"chain_id\": 2, \"synced_block_height\": 200}] }}";
@@ -86,7 +85,7 @@ namespace SourceLastBlock.Tests
 
             _httpTest.RespondWith(fakeJsonResponse);
 
-            var result = await getLastBlock.FetchDataAsync();
+            var result = getLastBlock.FetchData();
 
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(expectedDictionary);
@@ -101,8 +100,8 @@ namespace SourceLastBlock.Tests
             var result = await Request.CovalentResponse("https://api.covalenthq.com/v1/some_endpoint");
 
             result.Should().NotBeNull();
-            result.Should().BeOfType<JObject>();
-            result!.ToString().Should().Be(JToken.Parse(fakeJsonResponse).ToString());
+            result.Should().BeOfType<string>();
+            result!.Should().Be(fakeJsonResponse);
         }
     }
 }

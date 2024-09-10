@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using SourceLastBlock.Helpers;
 using SourceLastBlock.Utilities;
 using SourceLastBlock.SourcePage;
@@ -11,11 +11,11 @@ namespace SourceLastBlock
     public class GetLastBlock : GetSourcePage
     {
         private string GetUri { get; } = $"{Environments.LastBlockDownloaderUrl.Get<string>()}{Environments.LastBlockKey.Get<string>()}";
-        public override async Task<JToken?> GetResponseAsync() => await Request.CovalentResponse(GetUri);
+        public override string? GetResponse() => Request.CovalentResponse(GetUri).GetAwaiter().GetResult();
 
-        public override Dictionary<long, long> ParseResponse(JToken jsonData)
+        public override Dictionary<long, long> ParseResponse(string jsonData)
         {
-            var lastBlockData = jsonData.ToObject<LastBlockResponse>();
+            var lastBlockData = JsonConvert.DeserializeObject<LastBlockResponse>(jsonData);
 
             if (lastBlockData?.Data == null)
             {

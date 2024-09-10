@@ -14,7 +14,7 @@ namespace DownloaderV2.Tests.Builders.LastBlockBuilder
         }
 
         [Fact]
-        public async Task LastBlockDictionary_ShouldReturnCorrectData()
+        public void LastBlockDictionary_ShouldReturnCorrectData()
         {
             var mockGetSourcePage = new Mock<GetSourcePage>();
 
@@ -24,9 +24,9 @@ namespace DownloaderV2.Tests.Builders.LastBlockBuilder
                 { 2, 200 }
             };
 
-            mockGetSourcePage.Setup(page => page.FetchDataAsync()).ReturnsAsync(expectedDictionary);
+            mockGetSourcePage.Setup(page => page.FetchData()).Returns(expectedDictionary);
 
-            var result = await new LastBlockSource(mockGetSourcePage.Object).LastBlockDictionary;
+            var result = new LastBlockSource(mockGetSourcePage.Object).LastBlockDictionary;
 
             result.Should().BeEquivalentTo(expectedDictionary);
         }

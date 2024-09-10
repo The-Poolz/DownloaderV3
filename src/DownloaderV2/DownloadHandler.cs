@@ -21,7 +21,7 @@ public class DownloadHandler(BaseDownloaderContext context, GetSourcePage source
         // TODO: From ServiceProvider in the next step
         LogRouter.LogRouter.Initialize(context.GetType());
 
-        _lastBlockDictionary = await new LastBlockSource(sourcePage).LastBlockDictionary;
+        _lastBlockDictionary = new LastBlockSource(sourcePage).LastBlockDictionary;
 
         var uniqueEvents = _settingDownloader.DownloaderSettings
             .GroupBy(x => new { x.ChainId, x.ContractAddress, x.EventHash })

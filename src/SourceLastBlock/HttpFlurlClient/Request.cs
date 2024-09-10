@@ -1,16 +1,15 @@
 ﻿using Flurl.Http;
-using Newtonsoft.Json.Linq;
 using SourceLastBlock.Helpers;
 
 namespace SourceLastBlock.HttpFlurlClient;
 
 public static class Request
 {
-    public static async Task<JToken?> CovalentResponse(string url)
+    public static async Task<string?> CovalentResponse(string url)
     {
         try
         {
-            return JToken.Parse(await url.GetStringAsync());
+            return await url.GetStringAsync();
         }
         catch (Exception e)
         {

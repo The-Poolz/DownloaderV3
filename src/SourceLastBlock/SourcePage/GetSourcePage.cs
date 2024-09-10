@@ -1,16 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace SourceLastBlock.SourcePage;
+﻿namespace SourceLastBlock.SourcePage;
 
 public abstract class GetSourcePage
 {
-    public virtual async Task<Dictionary<long, long>> FetchDataAsync()
+    public virtual Dictionary<long, long> FetchData()
     {
-        var jsonData = await GetResponseAsync();
+        var jsonData = GetResponse();
         return ParseResponse(jsonData!);
     }
 
-    public abstract Task<JToken?> GetResponseAsync();
+    public abstract string? GetResponse();
 
-    public abstract Dictionary<long, long> ParseResponse(JToken jsonData);
+    public abstract Dictionary<long, long> ParseResponse(string jsonData);
 }
