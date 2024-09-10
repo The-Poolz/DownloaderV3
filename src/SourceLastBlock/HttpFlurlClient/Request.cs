@@ -10,7 +10,7 @@ public static class Request
     {
         try
         {
-            return await url.GetJsonAsync<JToken>();
+            return JToken.Parse(await url.GetStringAsync());
         }
         catch (Exception e)
         {
