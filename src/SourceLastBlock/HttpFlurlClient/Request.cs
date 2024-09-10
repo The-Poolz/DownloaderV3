@@ -13,7 +13,8 @@ public static class Request
         }
         catch (Exception e)
         {
-            return ApplicationLogger.LogAndThrowDynamic(e, ExceptionMessages.GeneralCovalentDataRetrievalError);
+            Console.WriteLine($"ERROR: {ExceptionMessages.GeneralCovalentDataRetrievalError} - {e.Message}");
+            throw;
         }
     }
 }

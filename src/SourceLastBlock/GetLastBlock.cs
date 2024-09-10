@@ -19,8 +19,7 @@ namespace SourceLastBlock
 
             if (lastBlockData?.Data == null)
             {
-                ApplicationLogger.LogAndThrowDynamic(new InvalidOperationException(ExceptionMessages.FailedToRetrieveLastBlockData));
-                return new Dictionary<long, long>();
+                throw new InvalidOperationException(ExceptionMessages.FailedToRetrieveLastBlockData);
             }
 
             return lastBlockData.Data.Items?
