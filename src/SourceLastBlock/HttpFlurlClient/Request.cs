@@ -4,14 +4,13 @@ using SourceLastBlock.Helpers;
 
 namespace SourceLastBlock.HttpFlurlClient;
 
-public abstract class Request
+public static class Request
 {
     public static async Task<JToken?> CovalentResponse(string url)
     {
-        using var client = new FlurlClient(url);
         try
         {
-            return JToken.Parse(await client.Request().SendAsync(new HttpMethod("GET")).ReceiveString());
+            return await url.GetJsonAsync<JToken>();
         }
         catch (Exception e)
         {
