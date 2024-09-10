@@ -1,6 +1,6 @@
 ﻿using Moq;
 using FluentAssertions;
-using SourceLastBlock.AbstractClass;
+using SourceLastBlock.SourcePage;
 using DownloaderV2.Builders.LastBlockBuilder;
 
 namespace DownloaderV2.Tests.Builders.LastBlockBuilder
@@ -26,18 +26,9 @@ namespace DownloaderV2.Tests.Builders.LastBlockBuilder
 
             mockGetSourcePage.Setup(page => page.FetchDataAsync()).ReturnsAsync(expectedDictionary);
 
-            LastBlockSource.Initialize(mockGetSourcePage.Object);
-            var result = await LastBlockSource.Instance.LastBlockDictionary;
+            var result = await new LastBlockSource(mockGetSourcePage.Object).LastBlockDictionary;
 
             result.Should().BeEquivalentTo(expectedDictionary);
-        }
-
-        [Fact]
-        public void Instance_ShouldThrowException_WhenNotInitialized()
-        {
-            var act = () => { var instance = LastBlockSource.Instance; };
-
-            act.Should().Throw<InvalidOperationException>().WithMessage("LastBlockSource not initialized.");
         }
     }
 }

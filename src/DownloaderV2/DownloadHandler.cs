@@ -3,9 +3,9 @@ using DownloaderV2.Result;
 using DownloaderV2.Helpers;
 using Net.Utils.TaskManager;
 using DownloaderContext.Models;
+using SourceLastBlock.SourcePage;
 using DownloaderV2.Builders.LogBuilder;
 using DownloaderV2.Builders.LastBlockBuilder;
-using SourceLastBlock.AbstractClass;
 
 namespace DownloaderV2;
 
@@ -20,9 +20,8 @@ public class DownloadHandler(BaseDownloaderContext context, GetSourcePage source
     {
         // TODO: From ServiceProvider in the next step
         LogRouter.LogRouter.Initialize(context.GetType());
-        LastBlockSource.Initialize(sourcePage);
 
-        _lastBlockDictionary = await LastBlockSource.Instance.LastBlockDictionary;
+        _lastBlockDictionary = await new LastBlockSource(sourcePage).LastBlockDictionary;
 
         var uniqueEvents = _settingDownloader.DownloaderSettings
             .GroupBy(x => new { x.ChainId, x.ContractAddress, x.EventHash })

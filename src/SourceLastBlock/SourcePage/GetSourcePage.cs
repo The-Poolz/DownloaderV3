@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace SourceLastBlock.AbstractClass;
+namespace SourceLastBlock.SourcePage;
 
 public abstract class GetSourcePage
 {
