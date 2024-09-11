@@ -40,7 +40,7 @@ jobs:
 
     - name: Generate UML Diagram
       run: |
-        puml-gen ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths **/tests
+        puml-gen ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths **/tests -format png
 
     - name: Download plantuml
       run: pip install plantuml
