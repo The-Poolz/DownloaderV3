@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using DownloaderContext.Models;
+using DownloaderV3.Destination.Models;
 using DownloaderV3.Builders.LogBuilder.Resolvers;
 
 namespace DownloaderV3.Tests.LogBuilder.Resolvers;

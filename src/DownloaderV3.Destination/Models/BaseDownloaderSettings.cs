@@ -1,6 +1,6 @@
-﻿using DownloaderContext.Attributes;
+﻿using DownloaderV3.Destination.Attributes;
 
-namespace DownloaderContext.Models;
+namespace DownloaderV3.Destination.Models;
 
 public class BaseDownloaderSettings
 {

@@ -1,4 +1,4 @@
-﻿using DownloaderContext.Models;
+﻿using DownloaderV3.Destination.Models;
 
 namespace DownloaderV3.Builders.LogBuilder.Resolvers;
 

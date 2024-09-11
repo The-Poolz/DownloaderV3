@@ -1,6 +1,6 @@
 ﻿using EnvironmentManager.Attributes;
 
-namespace CovalentLastBlock.Utilities;
+namespace DownloaderV3.Source.CovalentLastBlock.Utilities;
 
 /// <summary>
 /// Enum for environment variable keys.

@@ -1,4 +1,4 @@
-﻿namespace DownloaderContext.Models;
+﻿namespace DownloaderV3.Destination.Models;
 
 public class DownloaderSettings : BaseDownloaderSettings
 {

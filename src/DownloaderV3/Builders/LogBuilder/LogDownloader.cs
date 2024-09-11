@@ -1,10 +1,10 @@
 ﻿using UrlFiller;
 using UrlFiller.Resolver;
 using DownloaderV3.Helpers;
-using DownloaderContext.Models;
 using DownloaderV3.HttpFlurlClient;
-using DownloaderV3.Builders.LogBuilder.Resolvers;
 using DownloaderV3.Models.Covalent;
+using DownloaderV3.Destination.Models;
+using DownloaderV3.Builders.LogBuilder.Resolvers;
 
 namespace DownloaderV3.Builders.LogBuilder;
 

@@ -1,12 +1,12 @@
 ﻿using Flurl.Http;
 using Newtonsoft.Json;
-using CovalentLastBlock.Helpers;
-using CovalentLastBlock.Utilities;
-using CovalentLastBlock.SourcePage;
 using EnvironmentManager.Extensions;
-using CovalentLastBlock.Models.LastBlock;
+using DownloaderV3.Source.CovalentLastBlock.Helpers;
+using DownloaderV3.Source.CovalentLastBlock.Utilities;
+using DownloaderV3.Source.CovalentLastBlock.SourcePage;
+using DownloaderV3.Source.CovalentLastBlock.Models.LastBlock;
 
-namespace CovalentLastBlock;
+namespace DownloaderV3.Source.CovalentLastBlock;
 
 public class GetLastBlockCovalent : GetSourcePage
 {

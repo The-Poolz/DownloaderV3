@@ -1,6 +1,6 @@
-﻿using DownloaderContext;
-using DownloaderContext.Models;
+﻿using DownloaderV3.Destination;
 using Microsoft.EntityFrameworkCore;
+using DownloaderV3.Destination.Models;
 
 namespace DownloaderV3.Helpers;
 
@@ -9,14 +9,14 @@ public class SettingDownloader
     public List<DownloaderSettings> DownloaderSettings { get; }
     public Dictionary<long, ChainInfo> ChainSettings { get; }
 
-    public SettingDownloader(BaseDownloaderContext context)
+    public SettingDownloader(BaseDestination destination)
     {
-        DownloaderSettings = context.DownloaderSettings
+        DownloaderSettings = destination.DownloaderSettings
             .Include(ds => ds.DownloaderMappings)
             .Where(ds => ds.Active)
             .ToList();
 
-        ChainSettings = context.ChainsInfo
+        ChainSettings = destination.ChainsInfo
             .ToDictionary(c => c.ChainId, c => c);
     }
 }

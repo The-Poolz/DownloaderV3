@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using FluentAssertions;
-using CovalentLastBlock.Models.LastBlock;
+using DownloaderV3.Source.CovalentLastBlock.Models.LastBlock;
 
-namespace CovalentLastBlock.Tests.Models;
+namespace DownloaderV3.Source.CovalentLastBlock.Tests.Models;
 
 public class SourceLastBlockModelsTests
 {

@@ -1,25 +1,25 @@
-﻿using DownloaderContext;
-using DownloaderV3.Result;
+﻿using DownloaderV3.Result;
 using DownloaderV3.Helpers;
 using Net.Utils.TaskManager;
-using DownloaderContext.Models;
-using CovalentLastBlock.SourcePage;
+using DownloaderV3.Destination;
+using DownloaderV3.Destination.Models;
 using DownloaderV3.Builders.LogBuilder;
 using DownloaderV3.Builders.LastBlockBuilder;
+using DownloaderV3.Source.CovalentLastBlock.SourcePage;
 
 namespace DownloaderV3;
 
-public class DownloadHandler(BaseDownloaderContext context, GetSourcePage sourcePage)
+public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePage)
 {
-    private readonly SettingDownloader _settingDownloader = new(context);
-    private readonly SqlQueryHelper _sqlQueryHelper = new(context);
+    private readonly SettingDownloader _settingDownloader = new(destination);
+    private readonly SqlQueryHelper _sqlQueryHelper = new(destination);
     private readonly ResultBuilder _resultBuilder = new();
     private IReadOnlyDictionary<long, long> _lastBlockDictionary = new Dictionary<long, long>();
 
     public async Task<IEnumerable<ResultObject>> HandleAsync()
     {
         // TODO: From ServiceProvider in the next step
-        LogRouter.LogRouter.Initialize(context.GetType());
+        LogRouter.LogRouter.Initialize(destination.GetType());
 
         _lastBlockDictionary = new LastBlockSource(sourcePage).LastBlockDictionary;
 
@@ -63,7 +63,7 @@ public class DownloadHandler(BaseDownloaderContext context, GetSourcePage source
     private void HandleTopicSaving(DownloaderSettings topicSettings, LogDownloader downloader)
     {
         var logDecoder = new LogDecoder(topicSettings, downloader.DownloadedContractData);
-        logDecoder.LogResponses.LockedSaveAll(context);
+        logDecoder.LogResponses.LockedSaveAll(destination);
 
         if (!downloader.DownloadedContractData.Data.Pagination.HasMore)
         {

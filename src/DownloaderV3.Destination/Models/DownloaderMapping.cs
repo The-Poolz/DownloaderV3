@@ -1,4 +1,4 @@
-﻿namespace DownloaderContext.Models
+﻿namespace DownloaderV3.Destination.Models
 {
     /// <summary>
     /// Represents the mapping configuration for the downloader.

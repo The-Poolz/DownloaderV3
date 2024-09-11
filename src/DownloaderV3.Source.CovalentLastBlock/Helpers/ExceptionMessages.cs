@@ -1,4 +1,4 @@
-﻿namespace CovalentLastBlock.Helpers;
+﻿namespace DownloaderV3.Source.CovalentLastBlock.Helpers;
 
 /// <summary>
 /// Provides a collection of exception message templates.

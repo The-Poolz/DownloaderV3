@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
-using DownloaderContext.Models;
 using DownloaderV3.Models.Covalent;
+using DownloaderV3.Destination.Models;
 
 namespace DownloaderV3.Decoders;
 

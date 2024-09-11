@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Flurl.Http.Testing;
-using CovalentLastBlock.Helpers;
+using DownloaderV3.Source.CovalentLastBlock.Helpers;
 
-namespace CovalentLastBlock.Tests;
+namespace DownloaderV3.Source.CovalentLastBlock.Tests;
 
 public class GetLastBlockTests : IDisposable
 {

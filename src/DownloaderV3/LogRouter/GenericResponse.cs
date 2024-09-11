@@ -1,6 +1,6 @@
-﻿using DownloaderContext;
-using DownloaderV3.Helpers;
+﻿using DownloaderV3.Helpers;
 using DownloaderV3.Decoders;
+using DownloaderV3.Destination;
 
 namespace DownloaderV3.LogRouter;
 
@@ -15,9 +15,9 @@ public class GenericResponse<T> : ILogResponse where T : class, new()
         listOfData.ToList().ForEach(item => ObjectMaker.MakeObject(Instance, item));
     }
 
-    public void Save(BaseDownloaderContext context)
+    public void Save(BaseDestination destination)
     {
         BeforeSave?.Run(Instance);
-        context.Set<T>().Add(Instance);
+        destination.Set<T>().Add(Instance);
     }
 }

@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CovalentLastBlock\CovalentLastBlock.csproj" />
+    <ProjectReference Include="..\..\src\DownloaderV3.Source.CovalentLastBlock\DownloaderV3.Source.CovalentLastBlock.csproj" />
   </ItemGroup>
 
   <ItemGroup>

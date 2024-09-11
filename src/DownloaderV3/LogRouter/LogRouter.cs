@@ -1,7 +1,7 @@
 using System.Reflection;
 using DownloaderV3.Helpers;
 using DownloaderV3.Decoders;
-using DownloaderContext.Attributes;
+using DownloaderV3.Destination.Attributes;
 
 namespace DownloaderV3.LogRouter;
 
@@ -9,11 +9,11 @@ public static class LogRouter
 {
     private static Dictionary<string, string> _responseTypes = new();
 
-    public static void Initialize(Type contextType)
+    public static void Initialize(Type destinationType)
     {
-        _responseTypes = contextType.Assembly.GetTypes()
+        _responseTypes = destinationType.Assembly.GetTypes()
             .Where(x => x.GetCustomAttributes<ResponseModelAttribute>().Any())
-            .ToDictionary(key => key.Name, value => $"{value.FullName}, {contextType.Assembly.GetName().Name}")!;
+            .ToDictionary(key => key.Name, value => $"{value.FullName}, {destinationType.Assembly.GetName().Name}")!;
     }
 
     public static PreSaveActionBinder GetBinder(string responseModel)

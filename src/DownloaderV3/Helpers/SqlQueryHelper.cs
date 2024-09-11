@@ -1,16 +1,16 @@
-﻿using DownloaderContext;
-using DownloaderContext.Models;
+﻿using DownloaderV3.Destination;
 using Microsoft.EntityFrameworkCore;
+using DownloaderV3.Destination.Models;
 
 namespace DownloaderV3.Helpers;
 
-public class SqlQueryHelper(BaseDownloaderContext context)
+public class SqlQueryHelper(BaseDestination destination)
 {
     public void UpdateDownloaderSettings(DownloaderSettings settings, long endingBlock, long latestBlock)
     {
-        lock (context)
+        lock (destination)
         {
-            var item = context.DownloaderSettings.FirstOrDefault(T =>
+            var item = destination.DownloaderSettings.FirstOrDefault(T =>
                 T.ChainId == settings.ChainId &&
                 T.ResponseType == settings.ResponseType &&
                 T.EventHash == settings.EventHash &&
@@ -19,7 +19,7 @@ public class SqlQueryHelper(BaseDownloaderContext context)
             item.StartingBlock = endingBlock;
             item.EndingBlock = latestBlock;
 
-            context.DownloaderSettings.Update(item);
+            destination.DownloaderSettings.Update(item);
         }
     }
 
@@ -27,9 +27,9 @@ public class SqlQueryHelper(BaseDownloaderContext context)
     {
         try
         {
-            lock (context)
+            lock (destination)
             {
-                context.SaveChanges();
+                destination.SaveChanges();
             }
         }
         catch (DbUpdateException ex)
@@ -41,7 +41,7 @@ public class SqlQueryHelper(BaseDownloaderContext context)
 
     private void LogPendingChanges()
     {
-        foreach (var entry in context.ChangeTracker.Entries())
+        foreach (var entry in destination.ChangeTracker.Entries())
         {
             Console.WriteLine($"Entity: {entry.Entity.GetType().Name}, State: {entry.State}");
 

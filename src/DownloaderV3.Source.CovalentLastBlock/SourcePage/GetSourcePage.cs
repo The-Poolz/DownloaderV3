@@ -1,4 +1,4 @@
-﻿namespace CovalentLastBlock.SourcePage;
+﻿namespace DownloaderV3.Source.CovalentLastBlock.SourcePage;
 
 public abstract class GetSourcePage
 {

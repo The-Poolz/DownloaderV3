@@ -1,17 +1,17 @@
-﻿using DownloaderContext;
-using DownloaderV3.LogRouter;
+﻿using DownloaderV3.LogRouter;
+using DownloaderV3.Destination;
 
 namespace DownloaderV3.Extensions;
 
 public class SavedLogResponse : List<ILogResponse>
 {
-    public void LockedSaveAll(BaseDownloaderContext context)
+    public void LockedSaveAll(BaseDestination destination)
     {
         ForEach(response =>
         {
-            lock (context)
+            lock (destination)
             {
-                response.Save(context);
+                response.Save(destination);
             }
         });
     }

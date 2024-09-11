@@ -1,4 +1,4 @@
-﻿using DownloaderContext.Models;
+﻿using DownloaderV3.Destination.Models;
 using DownloaderV3.Decoders.DecoderHelpers;
 
 namespace DownloaderV3.Decoders;

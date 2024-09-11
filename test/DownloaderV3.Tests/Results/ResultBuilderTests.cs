@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using DownloaderV3.Result;
-using DownloaderContext.Models;
+using DownloaderV3.Destination.Models;
 
 namespace DownloaderV3.Tests.Results
 {

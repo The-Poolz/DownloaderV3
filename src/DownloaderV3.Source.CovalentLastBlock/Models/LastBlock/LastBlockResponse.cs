@@ -1,4 +1,4 @@
-﻿namespace CovalentLastBlock.Models.LastBlock;
+﻿namespace DownloaderV3.Source.CovalentLastBlock.Models.LastBlock;
 
 public class LastBlockResponse
 {
