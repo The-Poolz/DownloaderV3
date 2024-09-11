@@ -36,11 +36,11 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Install PlantUMLClassDiagramGenerator
-      run: dotnet tool install --global PlantUmlClassDiagramGenerator
-
     - name: Download PlantUML
       run: wget https://github.com/plantuml/plantuml/releases/download/v1.2023.7/plantuml.jar
+
+    - name: Install required Python libraries
+      run: pip install plantuml
 
     - name: Generate UML Diagram
       run: |
