@@ -10,6 +10,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GITHUB_PACKAGE_USER_NAME: ${{ github.actor }}
   GITHUB_PACKAGE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PLANTUML_LIMIT_SIZE: 8192
 
 jobs:
 
@@ -40,7 +41,7 @@ jobs:
 
     - name: Generate UML Diagram
       run: |
-        puml-gen ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths **/tests
+        java -Xmx1024m -DPLANTUML_LIMIT_SIZE=8192 -jar /path/to/plantuml.jar ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths **/tests
 
     - name: Download plantuml
       run: pip install plantuml
