@@ -39,12 +39,12 @@ jobs:
     - name: Install PlantUMLClassDiagramGenerator
       run: dotnet tool install --global PlantUmlClassDiagramGenerator
 
+    - name: Download PlantUML
+      run: wget https://github.com/plantuml/plantuml/releases/download/v1.2023.7/plantuml.jar
+
     - name: Generate UML Diagram
       run: |
-        java -Xmx1024m -DPLANTUML_LIMIT_SIZE=8192 -jar /path/to/plantuml.jar ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths **/tests
-
-    - name: Download plantuml
-      run: pip install plantuml
+        java -Xmx1024m -DPLANTUML_LIMIT_SIZE=8192 -jar plantuml.jar ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths **/tests
 
     - name: Write URL to file
       run: python .net-workflows/generate-uml-diagram-report.py
