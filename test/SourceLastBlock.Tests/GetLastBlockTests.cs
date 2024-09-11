@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Flurl.Http.Testing;
 using SourceLastBlock.Helpers;
-using SourceLastBlock.HttpFlurlClient;
 
 namespace SourceLastBlock.Tests
 {
@@ -89,19 +88,6 @@ namespace SourceLastBlock.Tests
 
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(expectedDictionary);
-        }
-
-        [Fact]
-        public async Task CovalentResponse_ShouldReturnJToken_WhenRequestIsSuccessful()
-        {
-            var fakeJsonResponse = "{\"data\": { \"items\": [{\"chain_id\": 1, \"synced_block_height\": 1000}] }}";
-            _httpTest.RespondWith(fakeJsonResponse);
-
-            var result = await LoggedRequest.GetStringAsyncWithLogger("https://api.covalenthq.com/v1/some_endpoint");
-
-            result.Should().NotBeNull();
-            result.Should().BeOfType<string>();
-            result!.Should().Be(fakeJsonResponse);
         }
     }
 }

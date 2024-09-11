@@ -1,30 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿using Flurl.Http;
+using Newtonsoft.Json;
 using SourceLastBlock.Helpers;
 using SourceLastBlock.Utilities;
 using SourceLastBlock.SourcePage;
 using EnvironmentManager.Extensions;
-using SourceLastBlock.HttpFlurlClient;
 using SourceLastBlock.Models.LastBlock;
 
-namespace SourceLastBlock
+namespace SourceLastBlock;
+
+public class GetLastBlockCovalent : GetSourcePage
 {
-    public class GetLastBlockCovalent : GetSourcePage
+    private string GetUri { get; } = $"{Environments.LastBlockDownloaderUrl.Get<string>()}{Environments.LastBlockKey.Get<string>()}";
+    public override string? GetResponse() => GetUri.GetStringAsync().GetAwaiter().GetResult();
+
+    public override Dictionary<long, long> ParseResponse(string jsonData)
     {
-        private string GetUri { get; } = $"{Environments.LastBlockDownloaderUrl.Get<string>()}{Environments.LastBlockKey.Get<string>()}";
-        public override string? GetResponse() => LoggedRequest.GetStringAsyncWithLogger(GetUri).GetAwaiter().GetResult();
+        var lastBlockData = JsonConvert.DeserializeObject<LastBlockResponse>(jsonData);
 
-        public override Dictionary<long, long> ParseResponse(string jsonData)
-        {
-            var lastBlockData = JsonConvert.DeserializeObject<LastBlockResponse>(jsonData);
+        if (lastBlockData?.Data == null)
+            throw new InvalidOperationException(ExceptionMessages.FailedToRetrieveLastBlockData);
 
-            if (lastBlockData?.Data == null)
-            {
-                throw new InvalidOperationException(ExceptionMessages.FailedToRetrieveLastBlockData);
-            }
-
-            return lastBlockData.Data.Items?
-                       .ToDictionary(item => item.ChainId, item => item.BlockHeight)
-                   ?? new Dictionary<long, long>();
-        }
+        return lastBlockData.Data.Items?
+                   .ToDictionary(item => item.ChainId, item => item.BlockHeight)
+               ?? new Dictionary<long, long>();
     }
 }
