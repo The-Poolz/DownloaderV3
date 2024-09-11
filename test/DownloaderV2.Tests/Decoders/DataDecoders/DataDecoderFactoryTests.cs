@@ -19,22 +19,18 @@ namespace DownloaderV2.Tests.Decoders.DataDecoders;
 
 public class DataDecoderFactoryTests
 {
-    private readonly Mock<IWeb3> _mockWeb3;
-    private readonly Mock<IEthApiContractService> _mockEthApiContractService;
-    private readonly Mock<IContractQueryHandler<DecimalsFunction>> _mockContractQueryHandler;
-
     public DataDecoderFactoryTests()
     {
         Environment.SetEnvironmentVariable("AWS_REGION", "us-east-2");
-        Environment.SetEnvironmentVariable("ApiUrl", "https://Test");
-        Environment.SetEnvironmentVariable("LastBlockKey", "covalent_key_here");
+        Environment.SetEnvironmentVariable("ApiUrl", "https://test?");
+        Environment.SetEnvironmentVariable("LastBlockKey", "key");
 
-        _mockWeb3 = new Mock<IWeb3>();
-        _mockEthApiContractService = new Mock<IEthApiContractService>();
-        _mockContractQueryHandler = new Mock<IContractQueryHandler<DecimalsFunction>>();
+        Mock<IWeb3> mockWeb3 = new();
+        Mock<IEthApiContractService> mockEthApiContractService = new();
+        Mock<IContractQueryHandler<DecimalsFunction>> mockContractQueryHandler = new();
 
-        _mockWeb3.Setup(m => m.Eth).Returns(_mockEthApiContractService.Object);
-        _mockEthApiContractService.Setup(e => e.GetContractQueryHandler<DecimalsFunction>()).Returns(_mockContractQueryHandler.Object);
+        mockWeb3.Setup(m => m.Eth).Returns(mockEthApiContractService.Object);
+        mockEthApiContractService.Setup(e => e.GetContractQueryHandler<DecimalsFunction>()).Returns(mockContractQueryHandler.Object);
     }
     private const string HexStringTest = "0x000000000000000000000000000000000000000000000005f1e065d9cbb1f107fffffffffffffffffffffffffffffffffffffffffffffffea50e2874a73c000000000000000000000000000000000000000000007a6cfdfc449ddb3923b8d84000000000000000000000000000000000000000000000019b969d845eb4fe3e17ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc65d00000000000000000000000000000000000000000000000004deb8a55b2c65880000000000000000000000000000000000000000000000000000000000000000";
     private const string RawTopicData = "0x00000000000000000000000041b56bf3b21c53f6394a44a2ff84f1d2bbc27841000000000000000000000000000000000000000000000000000000007fffffff0000000000000000000000000000000000000000000000007fffffffffffffff";
@@ -234,14 +230,12 @@ public class DataDecoderFactoryTests
     public void GetTokenDecimals_ShouldReturnCorrectDecimals()
     {
         var tokenAddress = new EthereumAddress("0x1234567890abcdef1234567890abcdef12345678");
-        const string rpcUrl = "https://Test";
         const long chainId = 1;
         const string name = "Test Token";
         const string symbol = "TTK";
         const byte decimals = 6;
         var totalSupply = new BigInteger(1000000);
 
-        var item = new GetCacheRequest(chainId, tokenAddress, rpcUrl);
         var token = new ERC20DynamoDbTable(chainId, tokenAddress, name, symbol, decimals, totalSupply);
 
         var mockCacheProvider = new Mock<ERC20CacheProvider>();
