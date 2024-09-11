@@ -3,9 +3,9 @@ using SourceLastBlock.Helpers;
 
 namespace SourceLastBlock.HttpFlurlClient;
 
-public static class Request
+public class LoggedRequest
 {
-    public static async Task<string?> CovalentResponse(string url)
+    public static async Task<string?> GetStringAsyncWithLogger(string url)
     {
         try
         {

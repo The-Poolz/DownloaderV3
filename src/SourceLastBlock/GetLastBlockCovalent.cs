@@ -8,10 +8,10 @@ using SourceLastBlock.Models.LastBlock;
 
 namespace SourceLastBlock
 {
-    public class GetLastBlock : GetSourcePage
+    public class GetLastBlockCovalent : GetSourcePage
     {
         private string GetUri { get; } = $"{Environments.LastBlockDownloaderUrl.Get<string>()}{Environments.LastBlockKey.Get<string>()}";
-        public override string? GetResponse() => Request.CovalentResponse(GetUri).GetAwaiter().GetResult();
+        public override string? GetResponse() => LoggedRequest.GetStringAsyncWithLogger(GetUri).GetAwaiter().GetResult();
 
         public override Dictionary<long, long> ParseResponse(string jsonData)
         {

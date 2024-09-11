@@ -21,7 +21,7 @@ namespace SourceLastBlock.Tests
         [Fact]
         public  void GetResponse_ShouldReturnValidJToken()
         {
-            var getLastBlock = new GetLastBlock();
+            var getLastBlock = new GetLastBlockCovalent();
             var fakeJsonResponse = "{\"data\": { \"items\": [{\"ChainId\": 1, \"BlockHeight\": 100}, {\"ChainId\": 2, \"BlockHeight\": 200}] }}";
 
             _httpTest.RespondWith(fakeJsonResponse);
@@ -42,7 +42,7 @@ namespace SourceLastBlock.Tests
                 { 1, 100 }
             };
 
-            var getLastBlock = new GetLastBlock();
+            var getLastBlock = new GetLastBlockCovalent();
 
             var result = getLastBlock.ParseResponse(jsonData);
 
@@ -53,7 +53,7 @@ namespace SourceLastBlock.Tests
         public void ParseResponse_InvalidJson_ThrowsException()
         {
             var jsonData = "{\"unexpected_field\": 1}";
-            var service = new GetLastBlock();
+            var service = new GetLastBlockCovalent();
 
             Action act = () => service.ParseResponse(jsonData);
 
@@ -64,7 +64,7 @@ namespace SourceLastBlock.Tests
         [Fact]
         public void ParseResponse_NullJson_ShouldThrowException()
         {
-            var getLastBlock = new GetLastBlock();
+            var getLastBlock = new GetLastBlockCovalent();
 
             Action act = () => getLastBlock.ParseResponse(null!);
 
@@ -74,7 +74,7 @@ namespace SourceLastBlock.Tests
         [Fact]
         public void FetchData_ShouldReturnParsedDictionary()
         {
-            var getLastBlock = new GetLastBlock();
+            var getLastBlock = new GetLastBlockCovalent();
             var fakeJsonResponse = "{\"data\": { \"items\": [{\"chain_id\": 1, \"synced_block_height\": 100}, {\"chain_id\": 2, \"synced_block_height\": 200}] }}";
 
             var expectedDictionary = new Dictionary<long, long>
@@ -97,7 +97,7 @@ namespace SourceLastBlock.Tests
             var fakeJsonResponse = "{\"data\": { \"items\": [{\"chain_id\": 1, \"synced_block_height\": 1000}] }}";
             _httpTest.RespondWith(fakeJsonResponse);
 
-            var result = await Request.CovalentResponse("https://api.covalenthq.com/v1/some_endpoint");
+            var result = await LoggedRequest.GetStringAsyncWithLogger("https://api.covalenthq.com/v1/some_endpoint");
 
             result.Should().NotBeNull();
             result.Should().BeOfType<string>();
