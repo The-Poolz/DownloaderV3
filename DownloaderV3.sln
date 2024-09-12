@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{32482522-1A4F-4BCF-9418-4681E7D3A9B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{800C2D6F-B4AD-4C8C-8520-8C0FCF7365B2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderV3", "src\DownloaderV3\DownloaderV3.csproj", "{F8867311-C3C5-4114-AEB8-52006CDB2873}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderV3.Tests", "test\DownloaderV3.Tests\DownloaderV3.Tests.csproj", "{11B82DA8-38C0-4953-8269-53013725C9D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderV3.Destination", "src\DownloaderV3.Destination\DownloaderV3.Destination.csproj", "{FF149CB0-42FD-4429-B2A5-FF0D94EAC171}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderV3.Source.CovalentLastBlock.Tests", "test\DownloaderV3.Source.CovalentLastBlock.Tests\DownloaderV3.Source.CovalentLastBlock.Tests.csproj", "{4B8E2C58-5100-43AB-B1F3-FA87396FD388}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderV3.Source.CovalentLastBlock", "src\DownloaderV3.Source.CovalentLastBlock\DownloaderV3.Source.CovalentLastBlock.csproj", "{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8867311-C3C5-4114-AEB8-52006CDB2873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8867311-C3C5-4114-AEB8-52006CDB2873}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8867311-C3C5-4114-AEB8-52006CDB2873}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8867311-C3C5-4114-AEB8-52006CDB2873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11B82DA8-38C0-4953-8269-53013725C9D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11B82DA8-38C0-4953-8269-53013725C9D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11B82DA8-38C0-4953-8269-53013725C9D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11B82DA8-38C0-4953-8269-53013725C9D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF149CB0-42FD-4429-B2A5-FF0D94EAC171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF149CB0-42FD-4429-B2A5-FF0D94EAC171}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF149CB0-42FD-4429-B2A5-FF0D94EAC171}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF149CB0-42FD-4429-B2A5-FF0D94EAC171}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B8E2C58-5100-43AB-B1F3-FA87396FD388}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B8E2C58-5100-43AB-B1F3-FA87396FD388}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B8E2C58-5100-43AB-B1F3-FA87396FD388}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B8E2C58-5100-43AB-B1F3-FA87396FD388}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F8867311-C3C5-4114-AEB8-52006CDB2873} = {32482522-1A4F-4BCF-9418-4681E7D3A9B0}
+		{11B82DA8-38C0-4953-8269-53013725C9D3} = {800C2D6F-B4AD-4C8C-8520-8C0FCF7365B2}
+		{FF149CB0-42FD-4429-B2A5-FF0D94EAC171} = {32482522-1A4F-4BCF-9418-4681E7D3A9B0}
+		{4B8E2C58-5100-43AB-B1F3-FA87396FD388} = {800C2D6F-B4AD-4C8C-8520-8C0FCF7365B2}
+		{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D} = {32482522-1A4F-4BCF-9418-4681E7D3A9B0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6596EE9D-441C-42C4-AEDA-C520A6C06544}
+	EndGlobalSection
+EndGlobal

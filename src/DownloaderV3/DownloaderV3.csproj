@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Net.Cache.DynamoDb.ERC20" Version="1.3.5" />
+    <PackageReference Include="Net.Utils.TaskManager" Version="1.0.1" />
+    <PackageReference Include="Nethereum.Hex" Version="4.21.4" />
+    <PackageReference Include="Nethereum.Util" Version="4.21.4" />
+    <PackageReference Include="Nethereum.Web3" Version="4.21.4" />
+    <PackageReference Include="UrlFiller" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DownloaderV3.Destination\DownloaderV3.Destination.csproj" />
+    <ProjectReference Include="..\DownloaderV3.Source.CovalentLastBlock\DownloaderV3.Source.CovalentLastBlock.csproj" />
+  </ItemGroup>
+
+</Project>
