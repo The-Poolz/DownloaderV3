@@ -11,9 +11,6 @@ namespace DownloaderV2.Utilities
         LastBlockKey,
 
         [EnvironmentVariable(isRequired: true)]
-        LastBlockDownloaderUrl,
-
-        [EnvironmentVariable(isRequired: true)]
         ApiUrl
     }
 }

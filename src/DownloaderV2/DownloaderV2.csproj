@@ -12,13 +12,12 @@
     <PackageReference Include="Nethereum.Hex" Version="4.21.4" />
     <PackageReference Include="Nethereum.Util" Version="4.21.4" />
     <PackageReference Include="Nethereum.Web3" Version="4.21.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="UrlFiller" Version="1.0.0" />
-    <PackageReference Include="Utils.EnvironmentManager" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DownloaderContext\DownloaderContext.csproj" />
+    <ProjectReference Include="..\SourceLastBlock\SourceLastBlock.csproj" />
   </ItemGroup>
 
 </Project>
