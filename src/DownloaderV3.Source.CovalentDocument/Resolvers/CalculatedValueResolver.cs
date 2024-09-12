@@ -1,6 +1,6 @@
 ﻿using DownloaderV3.Destination.Models;
 
-namespace DownloaderV3.Builders.LogBuilder.Resolvers;
+namespace DownloaderV3.Source.CovalentDocument.Resolvers;
 
 public class CalculatedValueResolver(long lastBlockOnCovalent, long delayBlocks, DownloaderSettings downloaderSettings)
 {

@@ -1,4 +1,4 @@
-﻿namespace DownloaderV3.Models.Covalent;
+﻿namespace DownloaderV3.Source.CovalentDocument.Models.Covalent;
 
 public class Params
 {

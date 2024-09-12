@@ -1,6 +1,6 @@
 ﻿using UrlFiller.Resolver;
 
-namespace DownloaderV3.Builders.LogBuilder.Resolvers;
+namespace DownloaderV3.Source.CovalentDocument.Resolvers;
 
 public class FunctionCallValueResolver(Func<string, string> function) : IValueResolver
 {

@@ -4,6 +4,7 @@ using Net.Utils.TaskManager;
 using DownloaderV3.Destination;
 using DownloaderV3.Destination.Models;
 using DownloaderV3.Builders.LogBuilder;
+using DownloaderV3.Source.CovalentDocument;
 using DownloaderV3.Builders.LastBlockBuilder;
 using DownloaderV3.Source.CovalentLastBlock.SourcePage;
 
@@ -40,7 +41,7 @@ public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePa
 
     private Task HandleContracts(int pageNumber, DownloaderSettings contractSettings, ITaskManager taskManager) => new(() =>
     {
-        var downloader = new LogDownloader(pageNumber, contractSettings, _lastBlockDictionary, _settingDownloader.ChainSettings);
+        var downloader = new CovalentDocument(pageNumber, contractSettings, _lastBlockDictionary, _settingDownloader.ChainSettings);
         HandleTopics(contractSettings, downloader);
         if (downloader.DownloadedContractData.Data.Pagination.HasMore)
         {
@@ -48,7 +49,7 @@ public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePa
         }
     });
 
-    private void HandleTopics(BaseDownloaderSettings contractSettings, LogDownloader downloader)
+    private void HandleTopics(BaseDownloaderSettings contractSettings, CovalentDocument downloader)
     {
         var uniqueTopics = _settingDownloader.DownloaderSettings
             .Where(x => x.ChainId == contractSettings.ChainId && x.ContractAddress == contractSettings.ContractAddress && x.EventHash == contractSettings.EventHash)
@@ -60,7 +61,7 @@ public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePa
         });
     }
 
-    private void HandleTopicSaving(DownloaderSettings topicSettings, LogDownloader downloader)
+    private void HandleTopicSaving(DownloaderSettings topicSettings, CovalentDocument downloader)
     {
         var logDecoder = new LogDecoder(topicSettings, downloader.DownloadedContractData);
         logDecoder.LogResponses.LockedSaveAll(destination);
@@ -72,9 +73,9 @@ public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePa
         }
     }
 
-    private void UpdateDownloaderSettings(DownloaderSettings topicSettings, LogDownloader downloader)
+    private void UpdateDownloaderSettings(DownloaderSettings topicSettings, CovalentDocument downloader)
     {
-        _sqlQueryHelper.UpdateDownloaderSettings(topicSettings, downloader.LastSavedBlock, downloader.ChainLastBlock);
+        _sqlQueryHelper.UpdateDownloaderSettings(topicSettings, downloader.SavedLastBlock, downloader.SourceLastBlock);
     }
 
     private void AddResult(DownloaderSettings topicSettings, int eventCount)

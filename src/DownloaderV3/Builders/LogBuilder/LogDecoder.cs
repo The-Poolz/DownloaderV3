@@ -1,8 +1,8 @@
 using DownloaderV3.Decoders;
 using DownloaderV3.Extensions;
-using DownloaderV3.Models.Covalent;
 using DownloaderV3.Destination.Models;
 using static DownloaderV3.LogRouter.LogRouter;
+using DownloaderV3.Source.CovalentDocument.Models.Covalent;
 
 namespace DownloaderV3.Builders.LogBuilder;
 
