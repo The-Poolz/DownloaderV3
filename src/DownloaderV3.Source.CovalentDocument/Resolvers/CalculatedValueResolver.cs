@@ -10,9 +10,9 @@ public class CalculatedValueResolver(long lastBlockOnCovalent, long delayBlocks,
     public long EndingBlock => CalculateEndingBlock;
     public bool IsValidateStartingBlock => downloaderSettings.StartingBlock < _lastBlockOnCovalent;
 
-    private long CalculateEndingBlock => Math.Max(ComputeLastBlock, downloaderSettings.StartingBlock);
+    public long CalculateEndingBlock => Math.Max(ComputeLastBlock, downloaderSettings.StartingBlock);
     
-    private long ComputeLastBlock => Math.Min(downloaderSettings.StartingBlock + BatchSize, _lastBlockOnCovalent - delayBlocks);
+    public long ComputeLastBlock => Math.Min(downloaderSettings.StartingBlock + BatchSize, _lastBlockOnCovalent - delayBlocks);
 
-    private long BatchSize => Math.Min(downloaderSettings.MaxBatchSize, MaxDelta);
+    public long BatchSize => Math.Min(downloaderSettings.MaxBatchSize, MaxDelta);
 }
