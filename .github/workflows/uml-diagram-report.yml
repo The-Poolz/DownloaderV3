@@ -38,6 +38,11 @@ jobs:
     - name: Install PlantUMLClassDiagramGenerator
       run: dotnet tool install --global PlantUmlClassDiagramGenerator
 
+    - name: Increase PlantUML size limit
+      run: |
+        echo "Setting PLANTUML_LIMIT_SIZE=8192"
+        export PLANTUML_LIMIT_SIZE=8192
+
     - name: Generate UML Diagram
       run: |
         puml-gen ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths **/tests
