@@ -3,10 +3,10 @@ using DownloaderV3.Helpers;
 using Net.Utils.TaskManager;
 using DownloaderV3.Destination;
 using DownloaderV3.Destination.Models;
-using DownloaderV3.Builders.LogBuilder;
 using DownloaderV3.Source.CovalentDocument;
 using DownloaderV3.Builders.LastBlockBuilder;
 using DownloaderV3.Source.CovalentLastBlock.SourcePage;
+using DownloaderV3.Source.CovalentDocument.DocumentRouter;
 
 namespace DownloaderV3;
 
@@ -20,7 +20,7 @@ public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePa
     public async Task<IEnumerable<ResultObject>> HandleAsync()
     {
         // TODO: From ServiceProvider in the next step
-        LogRouter.LogRouter.Initialize(destination.GetType());
+        DocumentRouter.Initialize(destination.GetType());
 
         _lastBlockDictionary = new LastBlockSource(sourcePage).LastBlockDictionary;
 
@@ -63,13 +63,13 @@ public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePa
 
     private void HandleTopicSaving(DownloaderSettings topicSettings, CovalentDocument downloader)
     {
-        var logDecoder = new LogDecoder(topicSettings, downloader.DownloadedContractData);
-        logDecoder.LogResponses.LockedSaveAll(destination);
+        var documentDecoder = new DocumentDecoder(topicSettings, downloader.DownloadedContractData);
+        documentDecoder.DocumentResponses.LockedSaveAll(destination);
 
         if (!downloader.DownloadedContractData.Data.Pagination.HasMore)
         {
             UpdateDownloaderSettings(topicSettings, downloader);
-            AddResult(topicSettings, logDecoder.EventCount);
+            AddResult(topicSettings, documentDecoder.EventCount);
         }
     }
 

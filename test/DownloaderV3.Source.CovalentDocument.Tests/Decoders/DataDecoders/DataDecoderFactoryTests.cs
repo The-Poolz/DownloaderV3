@@ -6,8 +6,8 @@ using Newtonsoft.Json.Linq;
 using Net.Web3.EthereumWallet;
 using Net.Cache.DynamoDb.ERC20;
 using Nethereum.Contracts.Services;
-using Net.Cache.DynamoDb.ERC20.Models;
 using DownloaderV3.Destination.Models;
+using Net.Cache.DynamoDb.ERC20.Models;
 using Nethereum.Contracts.ContractHandlers;
 using DownloaderV3.Source.CovalentDocument.Helpers;
 using DownloaderV3.Source.CovalentDocument.Decoders;
@@ -15,7 +15,7 @@ using Nethereum.Contracts.Standards.ERC20.ContractDefinition;
 using DownloaderV3.Source.CovalentDocument.Decoders.DataDecoders;
 using DownloaderV3.Source.CovalentDocument.Decoders.DecoderHelpers;
 
-namespace DownloaderV3.Tests.Decoders.DataDecoders;
+namespace DownloaderV3.Source.CovalentDocument.Tests.Decoders.DataDecoders;
 
 public class DataDecoderFactoryTests
 {
