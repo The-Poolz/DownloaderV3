@@ -7,6 +7,8 @@ using DownloaderV3.Source.CovalentDocument;
 using DownloaderV3.Builders.LastBlockBuilder;
 using DownloaderV3.Source.CovalentLastBlock.SourcePage;
 using DownloaderV3.Source.CovalentDocument.DocumentRouter;
+using DownloaderV3.Source.CovalentDocument.Document;
+using DownloaderV3.Source.CovalentDocument.Models.Covalent;
 
 namespace DownloaderV3;
 
@@ -43,13 +45,13 @@ public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePa
     {
         var downloader = new CovalentDocument(pageNumber, contractSettings, _lastBlockDictionary, _settingDownloader.ChainSettings);
         HandleTopics(contractSettings, downloader);
-        if (downloader.DownloadedContractData.Data.Pagination.HasMore)
+        if (downloader.DownloadedContractData!.Data.Pagination.HasMore)
         {
             taskManager.AddTask(HandleContracts(pageNumber + 1, contractSettings, taskManager));
         }
     });
 
-    private void HandleTopics(BaseDownloaderSettings contractSettings, CovalentDocument downloader)
+    private void HandleTopics(BaseDownloaderSettings contractSettings, BaseDocument<InputData> downloader)
     {
         var uniqueTopics = _settingDownloader.DownloaderSettings
             .Where(x => x.ChainId == contractSettings.ChainId && x.ContractAddress == contractSettings.ContractAddress && x.EventHash == contractSettings.EventHash)
@@ -61,19 +63,19 @@ public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePa
         });
     }
 
-    private void HandleTopicSaving(DownloaderSettings topicSettings, CovalentDocument downloader)
+    private void HandleTopicSaving(DownloaderSettings topicSettings, BaseDocument<InputData> downloader)
     {
-        var documentDecoder = new DocumentDecoder(topicSettings, downloader.DownloadedContractData);
+        var documentDecoder = new DocumentDecoder(topicSettings, downloader.DownloadedContractData!);
         documentDecoder.DocumentResponses.LockedSaveAll(destination);
 
-        if (!downloader.DownloadedContractData.Data.Pagination.HasMore)
+        if (!downloader.DownloadedContractData!.Data.Pagination.HasMore)
         {
             UpdateDownloaderSettings(topicSettings, downloader);
             AddResult(topicSettings, documentDecoder.EventCount);
         }
     }
 
-    private void UpdateDownloaderSettings(DownloaderSettings topicSettings, CovalentDocument downloader)
+    private void UpdateDownloaderSettings(DownloaderSettings topicSettings, BaseDocument<InputData> downloader)
     {
         _sqlQueryHelper.UpdateDownloaderSettings(topicSettings, downloader.SavedLastBlock, downloader.SourceLastBlock);
     }

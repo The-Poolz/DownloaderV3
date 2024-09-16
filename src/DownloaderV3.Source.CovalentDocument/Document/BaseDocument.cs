@@ -1,18 +1,18 @@
-﻿using DownloaderV3.Source.CovalentDocument.Models.Covalent;
+﻿namespace DownloaderV3.Source.CovalentDocument.Document;
 
-namespace DownloaderV3.Source.CovalentDocument.Document;
-
-public abstract class BaseDocument
+public abstract class BaseDocument<TData>
 {
-    public InputData DownloadedContractData { get; protected set; } = null!;
+    public TData? DownloadedContractData { get; protected set; }
+    public long SavedLastBlock { get; protected set; }
+    public long SourceLastBlock { get; protected set; }
 
     public virtual void FetchData()
     {
         var sourceData = GetResponse();
-        DownloadedContractData = DeserializeResponse(sourceData!) ?? throw new InvalidOperationException("Failed to deserialize response.");
+        DownloadedContractData = DeserializeResponse(sourceData) ?? throw new InvalidOperationException("Failed to deserialize response.");
     }
 
-    public abstract string? GetResponse();
+    public abstract string GetResponse();
 
-    public abstract InputData? DeserializeResponse(string sourceData);
+    public abstract TData? DeserializeResponse(string sourceData);
 }
