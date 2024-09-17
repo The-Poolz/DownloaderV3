@@ -11,7 +11,7 @@ namespace DownloaderV3.Source.CovalentDocument;
 public sealed class CovalentDocument : BaseDocument<InputData>
 {
     public CalculatedValueResolver CalculatedValueResolver { get; set; }
-    private string Url { get; }
+    public string Url { get; }
 
     public CovalentDocument(long pageNumber, DownloaderSettings downloaderSettings, IReadOnlyDictionary<long, long> lastBlockDictionary, IReadOnlyDictionary<long, ChainInfo> chainSettings)
     {

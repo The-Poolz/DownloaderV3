@@ -14,7 +14,7 @@ public class SqlQueryHelper(BaseDestination destination)
                 T.ChainId == settings.ChainId &&
                 T.ResponseType == settings.ResponseType &&
                 T.EventHash == settings.EventHash &&
-                T.ContractAddress == settings.ContractAddress) ?? ApplicationLogger.LogAndThrowDynamic(new NullReferenceException(nameof(settings))); 
+                T.ContractAddress == settings.ContractAddress) ?? throw new NullReferenceException(nameof(settings)); 
             
             item.StartingBlock = endingBlock;
             item.EndingBlock = latestBlock;
@@ -35,7 +35,7 @@ public class SqlQueryHelper(BaseDestination destination)
         catch (DbUpdateException ex)
         {
             LogPendingChanges();
-            ApplicationLogger.LogAndThrow(ex);
+            throw ex;
         }
     }
 
@@ -49,7 +49,7 @@ public class SqlQueryHelper(BaseDestination destination)
             {
                 var propName = property.Name;
                 var propValue = entry.CurrentValues[propName];
-                ApplicationLogger.Log(($"Property: {propName}, Value: {propValue}"));
+                Console.WriteLine(($"Property: {propName}, Value: {propValue}"));
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DownloaderV3.Source.CovalentDocument.Helpers;
+using Newtonsoft.Json.Linq;
 using Nethereum.Hex.HexTypes;
 
 namespace DownloaderV3.Source.CovalentDocument.Decoders.DataDecoders;
@@ -17,8 +18,7 @@ public class HexToDecimalWithTokenPath : HexToDecimal
         addressConverter.Initialize(mapClone, source);
         DecodedData = addressConverter.DecodedData;
 
-        //TODO: Implement ERC20CacheManager (or from the source code) to get the token info
-        //Decimals = new ERC20CacheManager().GetTokenInfo(conf.Mapping.DownloaderSettings.ChainId, DecodedData).Decimals;
+        Decimals = new ERC20CacheManager().GetTokenInfo(conf.Mapping.DownloaderSettings.ChainId, DecodedData).Decimals;
         Decimals = 18;
         BuildFromData(GetTopicData(conf, source));
     }

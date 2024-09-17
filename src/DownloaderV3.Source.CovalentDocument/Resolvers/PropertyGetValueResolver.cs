@@ -2,6 +2,7 @@
 
 namespace DownloaderV3.Source.CovalentDocument.Resolvers;
 
+//TODO : delete this class
 public class PropertyGetValueResolver(object targetObject) : IValueResolver
 {
     public string GetValue(string input)
