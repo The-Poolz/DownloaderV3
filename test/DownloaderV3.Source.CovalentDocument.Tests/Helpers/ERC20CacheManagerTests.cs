@@ -1,6 +1,7 @@
 ﻿using Moq;
 using System.Numerics;
 using FluentAssertions;
+using Net.Cache.DynamoDb.ERC20;
 using Net.Cache.DynamoDb.ERC20.Models;
 using DownloaderV3.Source.CovalentDocument.Helpers;
 
@@ -8,6 +9,12 @@ namespace DownloaderV3.Source.CovalentDocument.Tests.Helpers;
 
 public class ERC20CacheManagerTests
 {
+    public ERC20CacheManagerTests()
+    {
+        Environment.SetEnvironmentVariable("AWS_REGION", "us-east-1");
+        Environment.SetEnvironmentVariable("LastBlockKey", "test");
+        Environment.SetEnvironmentVariable("ApiUrl", "test");
+    }
     [Fact]
     public void GetTokenInfo_ShouldReturnTokenInfoFromCache()
     {
@@ -16,18 +23,23 @@ public class ERC20CacheManagerTests
         const string name = "Test Token";
         const string symbol = "TTK";
         const byte decimals = 6;
-        var totalSupply = new BigInteger(1000000);
+        var totalSupplyWei = BigInteger.Parse("1000000000000");
 
-        var expectedTokenInfo = new ERC20DynamoDbTable(chainId, tokenAddress, name, symbol, decimals, totalSupply);
+        var expectedTokenInfo = new ERC20DynamoDbTable(chainId, tokenAddress, name, symbol, decimals, totalSupplyWei);
 
-        var mockCacheManager = new Mock<ERC20CacheManager>();
-        mockCacheManager.Setup(x => x.GetTokenInfo(It.IsAny<long>(), It.IsAny<string>()))
+        var mockCacheProvider = new Mock<ERC20CacheProvider>();
+        mockCacheProvider.Setup(x => x.GetOrAdd(It.IsAny<GetCacheRequest>()))
             .Returns(expectedTokenInfo);
 
-        var result = mockCacheManager.Object.GetTokenInfo(chainId, tokenAddress);
+        var cacheManager = new ERC20CacheManager(mockCacheProvider.Object);
 
-        result.Should().BeEquivalentTo(expectedTokenInfo);
+        var result = cacheManager.GetTokenInfo(chainId, tokenAddress);
 
-        mockCacheManager.Verify(x => x.GetTokenInfo(chainId, tokenAddress), Times.Once);
+        result.ChainId.Should().Be(chainId);
+        result.Address.Should().Be(tokenAddress);
+        result.Name.Should().Be(name);
+        result.Symbol.Should().Be(symbol);
+        result.Decimals.Should().Be(decimals);
+        result.TotalSupply.Should().Be((decimal)1000000);
     }
 }
