@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using DownloaderV3.Destination.Models;
 using DownloaderV3.Source.CovalentDocument.Decoders;
 using DownloaderV3.Source.CovalentDocument.Tests.Models;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;

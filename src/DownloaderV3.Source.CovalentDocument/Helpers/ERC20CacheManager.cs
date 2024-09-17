@@ -9,7 +9,7 @@ public class ERC20CacheManager(ERC20CacheProvider erc20CacheProvider)
 {
     public ERC20CacheManager() : this(new ERC20CacheProvider()) { }
 
-    public ERC20DynamoDbTable GetTokenInfo(long chainId, string tokenAddress)
+    public virtual ERC20DynamoDbTable GetTokenInfo(long chainId, string tokenAddress)
     {
         var cacheRequest = new ApiRequestFactory().CreateCacheRequest(Environments.LastBlockKey.Get<string>(), chainId, tokenAddress, Environments.ApiUrl.Get<string>());
 

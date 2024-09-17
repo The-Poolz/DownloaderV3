@@ -3,6 +3,7 @@ using Nethereum.Web3;
 using System.Numerics;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
+using Nethereum.Hex.HexTypes;
 using Net.Web3.EthereumWallet;
 using Net.Cache.DynamoDb.ERC20;
 using Nethereum.Contracts.Services;
@@ -11,6 +12,7 @@ using Net.Cache.DynamoDb.ERC20.Models;
 using Nethereum.Contracts.ContractHandlers;
 using DownloaderV3.Source.CovalentDocument.Helpers;
 using DownloaderV3.Source.CovalentDocument.Decoders;
+using DownloaderV3.Source.CovalentDocument.Tests.Models;
 using Nethereum.Contracts.Standards.ERC20.ContractDefinition;
 using DownloaderV3.Source.CovalentDocument.Decoders.DataDecoders;
 using DownloaderV3.Source.CovalentDocument.Decoders.DecoderHelpers;
@@ -247,5 +249,37 @@ public class DataDecoderFactoryTests
 
         Assert.NotNull(result);
         Assert.Equal(decimals, result.Decimals);
+    }
+
+    [Fact]
+    public void Initialize_ShouldDecodeTokenAddressAndConvertToDecimal()
+    {
+        var tokenAddress = new EthereumAddress("0x1234567890abcdef1234567890abcdef12345678");
+        const long chainId = 56;
+        const string name = "Test Token";
+        const string symbol = "TTK";
+        const byte decimals = 6;
+        var totalSupply = new BigInteger(1000000);
+
+        var expectedTokenInfo = new ERC20DynamoDbTable(chainId, tokenAddress, name, symbol, decimals, totalSupply);
+
+        var mockCacheManager = new Mock<ERC20CacheManager>();
+        mockCacheManager.Setup(x => x.GetTokenInfo(It.IsAny<long>(), It.IsAny<string>()))
+            .Returns(expectedTokenInfo);
+
+        const string topicData = "000000000000000000000000000000000000000000000000016A89298AACF85F15";
+
+        var jsonToken = JToken.Parse(@"{ 'Items': [ { 'Raw_log_topics': [ '0x0', '0x1234567890abcdef1234567890abcdef12345678', '0x0', '" + topicData + @"' ] } ] }");
+
+        var decoderConfig = new DecoderConfiguration(DownloaderSettingsMock.DownloaderMappingsAdvanced[0]);
+
+        var hexToDecimalWithTokenPath = new HexToDecimalWithTokenPath(mockCacheManager.Object);
+
+        hexToDecimalWithTokenPath.Initialize(decoderConfig, jsonToken);
+
+        var expectedResult = Nethereum.Util.UnitConversion.Convert.FromWei(new HexBigInteger(topicData).Value, decimals);
+        ((decimal)hexToDecimalWithTokenPath.DecodedData).Should().Be(expectedResult);
+
+        mockCacheManager.Verify(x => x.GetTokenInfo(chainId, tokenAddress), Times.Once);
     }
 }

@@ -22,6 +22,11 @@ public static class DownloaderSettingsMock
     public static DownloaderMapping[] DownloaderMappings = new DownloaderMapping[]
     {
         new() { Name = "ChainId", Converter = "StringToInt32", Path = "$.chain_id", DownloaderSettings = DownloaderSettings },
-        new() { Name = "BlockHeight", Converter = "StringToInt32", Path = "$.Items[0].Block_height", DownloaderSettings = DownloaderSettings },
+        new() { Name = "BlockHeight", Converter = "StringToInt32", Path = "$.Items[0].Block_height", DownloaderSettings = DownloaderSettings }
+    };
+
+    public static DownloaderMapping[] DownloaderMappingsAdvanced = new DownloaderMapping[]
+    {
+        new() { Name = "TotalAmount", Converter = "HexToDecimalWithTokenPath($.Items[0].Raw_log_topics[1])", Path = "$.Items[0].Raw_log_topics[3]", DownloaderSettings = DownloaderSettings }
     };
 }
