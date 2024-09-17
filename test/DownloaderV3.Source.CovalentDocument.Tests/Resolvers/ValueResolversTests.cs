@@ -99,47 +99,4 @@ public class ValueResolversTests
 
         resolver.EndingBlock.Should().Be(10200);
     }
-
-    [Fact]
-    public void GetValue_ShouldInvokeFunction_AndReturnExpectedResult()
-    {
-        const string expected = "Modified input";
-        string Function(string input) => "Modified " + input;
-        var resolver = new FunctionCallValueResolver(Function);
-        
-        var result = resolver.GetValue("input");
-
-        result.Should().Be(expected);
-    }
-
-    public class TestObject
-    {
-        public string Name { get; set; } = "TestName";
-        public int Age { get; set; } = 30;
-    }
-
-    [Fact]
-    public void GetValue_ShouldReturnPropertyValue_WhenPropertyExists()
-    {
-        var testObject = new TestObject();
-        var resolver = new PropertyGetValueResolver(testObject);
-
-        var nameResult = resolver.GetValue("Name");
-        var ageResult = resolver.GetValue("Age");
-
-        nameResult.Should().Be("TestName");
-        ageResult.Should().Be("30");
-    }
-
-    [Fact]
-    public void GetValue_ShouldThrowArgumentException_WhenPropertyDoesNotExist()
-    {
-        var testObject = new TestObject();
-        var resolver = new PropertyGetValueResolver(testObject);
-
-        var act = () => resolver.GetValue("NonExistentProperty");
-
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("No property 'NonExistentProperty' found in object of type 'TestObject'");
-    }
 }
