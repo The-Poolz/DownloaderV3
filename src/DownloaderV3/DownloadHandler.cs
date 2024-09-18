@@ -9,22 +9,36 @@ using DownloaderV3.Source.CovalentLastBlock.SourcePage;
 using DownloaderV3.Source.CovalentDocument.DocumentRouter;
 using DownloaderV3.Source.CovalentDocument.Document;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;
+using DownloaderV3.Source.CovalentDocument.Document.DocumentDecoder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DownloaderV3;
 
-public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePage)
+public class DownloadHandler
 {
-    private readonly SettingDownloader _settingDownloader = new(destination);
-    private readonly SqlQueryHelper _sqlQueryHelper = new(destination);
+    private readonly GetSourcePage _sourcePage;
+    private readonly BaseDestination _destination;
+    private readonly SettingDownloader _settingDownloader;
+    private readonly SqlQueryHelper _sqlQueryHelper;
     private readonly ResultBuilder _resultBuilder = new();
+    private readonly IDocumentDecoderFactory _documentDecoderFactory;
     private IReadOnlyDictionary<long, long> _lastBlockDictionary = new Dictionary<long, long>();
+
+    public DownloadHandler(IServiceProvider serviceProvider)
+    {
+        _documentDecoderFactory = serviceProvider.GetRequiredService<IDocumentDecoderFactory>();
+        _destination = serviceProvider.GetRequiredService<BaseDestination>();
+        _sourcePage = serviceProvider.GetRequiredService<GetSourcePage>();
+
+        _settingDownloader = new SettingDownloader(_destination);
+        _sqlQueryHelper = new SqlQueryHelper(_destination);
+    }
 
     public async Task<IEnumerable<ResultObject>> HandleAsync()
     {
-        // TODO: From ServiceProvider in the next step
-        DocumentRouter.Initialize(destination.GetType());
+        DocumentRouter.Initialize(_destination.GetType());
 
-        _lastBlockDictionary = new LastBlockSource(sourcePage).LastBlockDictionary;
+        _lastBlockDictionary = new LastBlockSource(_sourcePage).LastBlockDictionary;
 
         var uniqueEvents = _settingDownloader.DownloaderSettings
             .GroupBy(x => new { x.ChainId, x.ContractAddress, x.EventHash })
@@ -65,8 +79,8 @@ public class DownloadHandler(BaseDestination destination, GetSourcePage sourcePa
 
     private void HandleTopicSaving(DownloaderSettings topicSettings, BaseDocument<InputData> downloader)
     {
-        var documentDecoder = new DocumentDecoder(topicSettings, downloader.DownloadedContractData!);
-        documentDecoder.DocumentResponses.LockedSaveAll(destination);
+        var documentDecoder = _documentDecoderFactory.Create(topicSettings, downloader.DownloadedContractData!);
+        documentDecoder.DocumentResponses.LockedSaveAll(_destination);
 
         if (!downloader.DownloadedContractData!.Data.Pagination.HasMore)
         {

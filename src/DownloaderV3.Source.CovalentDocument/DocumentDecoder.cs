@@ -1,21 +1,21 @@
 using DownloaderV3.Destination.Models;
 using DownloaderV3.Source.CovalentDocument.Decoders;
-using DownloaderV3.Source.CovalentDocument.Document;
 using DownloaderV3.Source.CovalentDocument.Extensions;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;
+using DownloaderV3.Source.CovalentDocument.Document.DocumentDecoder;
 using static DownloaderV3.Source.CovalentDocument.DocumentRouter.DocumentRouter;
 
 namespace DownloaderV3.Source.CovalentDocument;
 
-public class DocumentDecoder : BaseDocumentDecoder<InputData>
+public sealed class DocumentDecoder : BaseDocumentDecoder<InputData>
 {
     public DocumentDecoder(DownloaderSettings downloaderSettings, InputData inputData)
     {
-        this.DocumentResponses = [];
+        DocumentResponses = [];
         DecodeDocument(downloaderSettings, inputData);
     }
 
-    public sealed override SavedDocumentResponse DecodeDocument(DownloaderSettings downloaderSettings, InputData inputData)
+    public override SavedDocumentResponse DecodeDocument(DownloaderSettings downloaderSettings, InputData inputData)
     {
         if (inputData.Data.Items.Length == 0) return DocumentResponses;
 
