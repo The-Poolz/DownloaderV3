@@ -2,7 +2,7 @@
 
 namespace DownloaderV3.Source.CovalentDocument.Models.Covalent;
 
-public class InputData
+public class InputData : IHasPagination
 {
     public Data Data { get; set; } = null!;
 
@@ -13,4 +13,6 @@ public class InputData
 
     [JsonProperty("Error_code")]
     public int? ErrorCode { get; set; }
+
+    public Pagination Pagination => Data.Pagination;
 }

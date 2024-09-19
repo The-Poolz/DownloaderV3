@@ -3,18 +3,17 @@ using DownloaderV3.Helpers;
 using Net.Utils.TaskManager;
 using DownloaderV3.Destination;
 using DownloaderV3.Destination.Models;
-using DownloaderV3.Source.CovalentDocument;
 using DownloaderV3.Builders.LastBlockBuilder;
+using Microsoft.Extensions.DependencyInjection;
+using DownloaderV3.Source.CovalentDocument.Document;
 using DownloaderV3.Source.CovalentLastBlock.SourcePage;
 using DownloaderV3.Source.CovalentDocument.DocumentRouter;
-using DownloaderV3.Source.CovalentDocument.Document;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;
 using DownloaderV3.Source.CovalentDocument.Document.DocumentDecoder;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DownloaderV3;
 
-public class DownloadHandler
+public class DownloadHandler<TData> where TData : IHasPagination
 {
     private readonly GetSourcePage _sourcePage;
     private readonly BaseDestination _destination;
@@ -22,16 +21,19 @@ public class DownloadHandler
     private readonly SqlQueryHelper _sqlQueryHelper;
     private readonly ResultBuilder _resultBuilder = new();
     private readonly IDocumentDecoderFactory _documentDecoderFactory;
+    private readonly IDocumentFactory _documentFactory;
     private IReadOnlyDictionary<long, long> _lastBlockDictionary = new Dictionary<long, long>();
 
     public DownloadHandler(IServiceProvider serviceProvider)
     {
-        _documentDecoderFactory = serviceProvider.GetRequiredService<IDocumentDecoderFactory>();
         _destination = serviceProvider.GetRequiredService<BaseDestination>();
         _sourcePage = serviceProvider.GetRequiredService<GetSourcePage>();
 
         _settingDownloader = new SettingDownloader(_destination);
         _sqlQueryHelper = new SqlQueryHelper(_destination);
+
+        _documentFactory = serviceProvider.GetRequiredService<IDocumentFactory>();
+        _documentDecoderFactory = serviceProvider.GetRequiredService<IDocumentDecoderFactory>();
     }
 
     public async Task<IEnumerable<ResultObject>> HandleAsync()
@@ -57,15 +59,15 @@ public class DownloadHandler
 
     private Task HandleContracts(int pageNumber, DownloaderSettings contractSettings, ITaskManager taskManager) => new(() =>
     {
-        var downloader = new CovalentDocument(pageNumber, contractSettings, _lastBlockDictionary, _settingDownloader.ChainSettings);
+        var downloader = _documentFactory.Create<TData>(pageNumber, contractSettings, _lastBlockDictionary, _settingDownloader.ChainSettings);
         HandleTopics(contractSettings, downloader);
-        if (downloader.DownloadedContractData!.Data.Pagination.HasMore)
+        if (downloader.DownloadedContractData!.Pagination.HasMore)
         {
             taskManager.AddTask(HandleContracts(pageNumber + 1, contractSettings, taskManager));
         }
     });
 
-    private void HandleTopics(BaseDownloaderSettings contractSettings, BaseDocument<InputData> downloader)
+    private void HandleTopics(BaseDownloaderSettings contractSettings, BaseDocument<TData> downloader)
     {
         var uniqueTopics = _settingDownloader.DownloaderSettings
             .Where(x => x.ChainId == contractSettings.ChainId && x.ContractAddress == contractSettings.ContractAddress && x.EventHash == contractSettings.EventHash)
@@ -77,19 +79,19 @@ public class DownloadHandler
         });
     }
 
-    private void HandleTopicSaving(DownloaderSettings topicSettings, BaseDocument<InputData> downloader)
+    private void HandleTopicSaving(DownloaderSettings topicSettings, BaseDocument<TData> downloader)
     {
-        var documentDecoder = _documentDecoderFactory.Create(topicSettings, downloader.DownloadedContractData!);
+        var documentDecoder = _documentDecoderFactory.Create(topicSettings, downloader);
         documentDecoder.DocumentResponses.LockedSaveAll(_destination);
 
-        if (!downloader.DownloadedContractData!.Data.Pagination.HasMore)
+        if (!downloader.DownloadedContractData!.Pagination.HasMore)
         {
             UpdateDownloaderSettings(topicSettings, downloader);
             AddResult(topicSettings, documentDecoder.EventCount);
         }
     }
 
-    private void UpdateDownloaderSettings(DownloaderSettings topicSettings, BaseDocument<InputData> downloader)
+    private void UpdateDownloaderSettings(DownloaderSettings topicSettings, BaseDocument<TData> downloader)
     {
         _sqlQueryHelper.UpdateDownloaderSettings(topicSettings, downloader.SavedLastBlock, downloader.SourceLastBlock);
     }
