@@ -10,32 +10,39 @@ using DownloaderV3.Source.CovalentLastBlock.SourcePage;
 using DownloaderV3.Source.CovalentDocument.DocumentRouter;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;
 using DownloaderV3.Source.CovalentDocument.Document.DocumentDecoder;
+using System;
 
 namespace DownloaderV3;
 
 public class DownloadHandler<TData> where TData : IHasPagination
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly BaseDestination _destination;
+    private readonly GetSourcePage _getSourcePage;
     private readonly SettingDownloader _settingDownloader;
     private readonly SqlQueryHelper _sqlQueryHelper;
     private readonly ResultBuilder _resultBuilder = new();
+    private readonly IDocumentFactory _documentFactory;
+    private readonly IDocumentDecoderFactory _documentDecoderFactory;
+
     private IReadOnlyDictionary<long, long> _lastBlockDictionary = new Dictionary<long, long>();
 
     public DownloadHandler(IServiceProvider serviceProvider)
     {
-        this._serviceProvider = serviceProvider;
+        _getSourcePage = serviceProvider.GetRequiredService<GetSourcePage>();
         _destination = serviceProvider.GetRequiredService<BaseDestination>();
 
         _settingDownloader = new SettingDownloader(_destination);
         _sqlQueryHelper = new SqlQueryHelper(_destination);
+
+        _documentFactory = serviceProvider.GetRequiredService<IDocumentFactory>();
+        _documentDecoderFactory = serviceProvider.GetRequiredService<IDocumentDecoderFactory>();
     }
 
     public async Task<IEnumerable<ResultObject>> HandleAsync()
     {
         DocumentRouter.Initialize(_destination.GetType());
 
-        _lastBlockDictionary = new LastBlockSource(_serviceProvider.GetRequiredService<GetSourcePage>()).LastBlockDictionary;
+        _lastBlockDictionary = new LastBlockSource(_getSourcePage).LastBlockDictionary;
 
         var uniqueEvents = _settingDownloader.DownloaderSettings
             .GroupBy(x => new { x.ChainId, x.ContractAddress, x.EventHash })
@@ -54,7 +61,7 @@ public class DownloadHandler<TData> where TData : IHasPagination
 
     private Task HandleContracts(int pageNumber, DownloaderSettings contractSettings, ITaskManager taskManager) => new(() =>
     {
-        var document = _serviceProvider.GetRequiredService<IDocumentFactory>().Create<TData>(pageNumber, contractSettings, _lastBlockDictionary, _settingDownloader.ChainSettings);
+        var document = _documentFactory.Create<TData>(pageNumber, contractSettings, _lastBlockDictionary, _settingDownloader.ChainSettings);
         HandleTopics(contractSettings, document);
         if (document.DownloadedContractData!.Pagination.HasMore)
         {
@@ -76,7 +83,7 @@ public class DownloadHandler<TData> where TData : IHasPagination
 
     private void HandleTopicSaving(DownloaderSettings topicSettings, BaseDocument<TData> document)
     {
-        var documentDecoder = _serviceProvider.GetRequiredService<IDocumentDecoderFactory>().Create(topicSettings, document);
+        var documentDecoder = _documentDecoderFactory.Create(topicSettings, document);
         documentDecoder.DocumentResponses.LockedSaveAll(_destination);
 
         if (!document.DownloadedContractData!.Pagination.HasMore)
