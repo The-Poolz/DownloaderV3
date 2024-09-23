@@ -14,7 +14,7 @@ public class SqlQueryHelper(BaseDestination destination)
                 T.ChainId == settings.ChainId &&
                 T.ResponseType == settings.ResponseType &&
                 T.EventHash == settings.EventHash &&
-                T.ContractAddress == settings.ContractAddress) ?? throw new NullReferenceException(nameof(settings)); 
+                T.ContractAddress == settings.ContractAddress) ?? ApplicationLogger.LogAndThrowDynamic(new NullReferenceException(nameof(settings))); 
             
             item.StartingBlock = endingBlock;
             item.EndingBlock = latestBlock;
@@ -35,7 +35,7 @@ public class SqlQueryHelper(BaseDestination destination)
         catch (DbUpdateException ex)
         {
             LogPendingChanges();
-            throw ex;
+            ApplicationLogger.LogAndThrow(ex);
         }
     }
 
