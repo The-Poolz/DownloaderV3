@@ -2,7 +2,7 @@
 
 namespace DownloaderV3.Helpers
 {
-    public static class ApplicationLogger
+    public class ApplicationLogger
     {
         private static ILogger? _logger;
 

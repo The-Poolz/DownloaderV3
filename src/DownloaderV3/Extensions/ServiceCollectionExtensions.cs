@@ -1,8 +1,9 @@
-﻿using DownloaderV3.Destination;
+﻿using DownloaderV3.Helpers;
+using DownloaderV3.Destination;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using DownloaderV3.Source.CovalentDocument.Document;
 using DownloaderV3.Source.CovalentLastBlock.SourcePage;
-using DownloaderV3.Source.CovalentDocument.Models.Covalent;
 using DownloaderV3.Source.CovalentDocument.Document.DocumentDecoder;
 
 namespace DownloaderV3.Extensions;
@@ -15,7 +16,13 @@ public static class ServiceCollectionExtensions
         services.AddTransient<BaseDestination>();
         services.AddTransient<IDocumentFactory>();
         services.AddTransient<IDocumentDecoderFactory>();
-        services.AddTransient<DownloadHandler<InputData>>();
+        services.AddTransient(typeof(DownloadHandler<>));
+
+        services.AddLogging(config => config.AddConsole());
+
+        var serviceProvider = services.BuildServiceProvider();
+        var logger = serviceProvider.GetRequiredService<ILogger<ApplicationLogger>>();
+        ApplicationLogger.Initialize(logger);
 
         return services;
     }

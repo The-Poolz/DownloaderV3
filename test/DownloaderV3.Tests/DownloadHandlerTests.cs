@@ -7,6 +7,7 @@ using DownloaderV3.Source.CovalentDocument.Document;
 using DownloaderV3.Source.CovalentLastBlock.SourcePage;
 using DownloaderV3.Source.CovalentDocument.Document.DocumentDecoder;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;
+using DownloaderV3.Helpers;
 
 namespace DownloaderV3.Tests;
 
@@ -54,6 +55,7 @@ public class DownloadHandlerTests
         _serviceProviderMock.Verify(sp => sp.GetService(typeof(GetSourcePage)), Times.Once);
         _serviceProviderMock.Verify(sp => sp.GetService(typeof(IDocumentDecoderFactory)), Times.Once);
         _serviceProviderMock.Verify(sp => sp.GetService(typeof(IDocumentFactory)), Times.Once);
+        _serviceProviderMock.Verify(sp => sp.GetService(typeof(ApplicationLogger)), Times.Once);
 
         handler.Should().NotBeNull();
     }
