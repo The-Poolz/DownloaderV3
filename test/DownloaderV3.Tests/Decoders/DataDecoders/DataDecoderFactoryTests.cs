@@ -3,17 +3,17 @@ using Nethereum.Web3;
 using System.Numerics;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
-using DownloaderV3.Helpers;
-using DownloaderV3.Decoders;
 using Net.Web3.EthereumWallet;
 using Net.Cache.DynamoDb.ERC20;
 using Nethereum.Contracts.Services;
 using Net.Cache.DynamoDb.ERC20.Models;
 using DownloaderV3.Destination.Models;
-using DownloaderV3.Decoders.DataDecoders;
 using Nethereum.Contracts.ContractHandlers;
-using DownloaderV3.Decoders.DecoderHelpers;
+using DownloaderV3.Source.CovalentDocument.Helpers;
+using DownloaderV3.Source.CovalentDocument.Decoders;
 using Nethereum.Contracts.Standards.ERC20.ContractDefinition;
+using DownloaderV3.Source.CovalentDocument.Decoders.DataDecoders;
+using DownloaderV3.Source.CovalentDocument.Decoders.DecoderHelpers;
 
 namespace DownloaderV3.Tests.Decoders.DataDecoders;
 
