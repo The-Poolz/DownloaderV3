@@ -13,7 +13,7 @@ using DownloaderV3.Source.CovalentDocument.Document.DocumentDecoder;
 
 namespace DownloaderV3;
 
-public class DownloadHandler<TData> where TData : IHasPagination
+public class DownloadHandler<TData> where TData : InputData, IHasPagination
 {
     private readonly BaseDestination _destination;
     private readonly GetSourcePage _getSourcePage;
@@ -82,7 +82,8 @@ public class DownloadHandler<TData> where TData : IHasPagination
 
     private void HandleTopicSaving(DownloaderSettings topicSettings, BaseDocument<TData> document)
     {
-        var documentDecoder = _documentDecoderFactory.Create(topicSettings, document);
+        var documentDecoder = _documentDecoderFactory.Create(topicSettings, document.DownloadedContractData!);
+
         documentDecoder.DocumentResponses.LockedSaveAll(_destination);
 
         if (!document.DownloadedContractData!.Pagination.HasMore)
