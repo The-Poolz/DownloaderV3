@@ -17,8 +17,6 @@ public class ChunkExtractor
         _rawData = source.SelectToken(dataPath)!.ToString();
         if (_rawData.Length < ChunkSize * _chunkIndex)
         {
-            // TODO: Add logging
-            //ApplicationLogger.LogAndThrow(new IndexOutOfRangeException(ExceptionMessages.IndexOutOfRangeChunkExtraction));
             throw new IndexOutOfRangeException(ExceptionMessages.IndexOutOfRangeChunkExtraction);
         }
         if (_rawData.StartsWith("0x"))
@@ -33,8 +31,6 @@ public class ChunkExtractor
         var match = Regex.Match(fullPath, @"^(.*)#(\d+)$");
         if (!match.Success)
         {
-            // TODO: Add logging
-            //ApplicationLogger.LogAndThrow(new InvalidOperationException(ExceptionMessages.InvalidPathInRawDataDecoder));
             throw new InvalidOperationException(ExceptionMessages.InvalidPathInRawDataDecoder);
         }
 
