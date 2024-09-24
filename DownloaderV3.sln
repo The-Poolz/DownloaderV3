@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderV3.Source.Covalen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderV3.Source.CovalentLastBlock", "src\DownloaderV3.Source.CovalentLastBlock\DownloaderV3.Source.CovalentLastBlock.csproj", "{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderV3.Source.CovalentDocument", "src\DownloaderV3.Source.CovalentDocument\DownloaderV3.Source.CovalentDocument.csproj", "{2C80420B-89C2-4486-B566-10F3E86CF2BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C80420B-89C2-4486-B566-10F3E86CF2BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C80420B-89C2-4486-B566-10F3E86CF2BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C80420B-89C2-4486-B566-10F3E86CF2BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C80420B-89C2-4486-B566-10F3E86CF2BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{FF149CB0-42FD-4429-B2A5-FF0D94EAC171} = {32482522-1A4F-4BCF-9418-4681E7D3A9B0}
 		{4B8E2C58-5100-43AB-B1F3-FA87396FD388} = {800C2D6F-B4AD-4C8C-8520-8C0FCF7365B2}
 		{2B72FA06-B3D5-4FBA-A44B-72BC7B5ECA7D} = {32482522-1A4F-4BCF-9418-4681E7D3A9B0}
+		{2C80420B-89C2-4486-B566-10F3E86CF2BF} = {32482522-1A4F-4BCF-9418-4681E7D3A9B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6596EE9D-441C-42C4-AEDA-C520A6C06544}

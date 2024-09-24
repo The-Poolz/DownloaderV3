@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using DownloaderV3.Destination.Models;
-using DownloaderV3.Builders.LogBuilder.Resolvers;
+using DownloaderV3.Source.CovalentDocument.Resolvers;
 
 namespace DownloaderV3.Tests.LogBuilder.Resolvers;
 

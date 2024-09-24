@@ -34,23 +34,7 @@ public class SqlQueryHelper(BaseDestination destination)
         }
         catch (DbUpdateException ex)
         {
-            LogPendingChanges();
             ApplicationLogger.LogAndThrow(ex);
-        }
-    }
-
-    private void LogPendingChanges()
-    {
-        foreach (var entry in destination.ChangeTracker.Entries())
-        {
-            Console.WriteLine($"Entity: {entry.Entity.GetType().Name}, State: {entry.State}");
-
-            foreach (var property in entry.CurrentValues.Properties)
-            {
-                var propName = property.Name;
-                var propValue = entry.CurrentValues[propName];
-                ApplicationLogger.Log(($"Property: {propName}, Value: {propValue}"));
-            }
         }
     }
 }
