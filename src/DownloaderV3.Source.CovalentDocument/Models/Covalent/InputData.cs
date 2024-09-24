@@ -14,5 +14,5 @@ public class InputData : IHasPagination
     [JsonProperty("Error_code")]
     public int? ErrorCode { get; set; }
 
-    public Pagination Pagination => Data.Pagination;
+    public Pagination GetPagination() => Data.Pagination;
 }
