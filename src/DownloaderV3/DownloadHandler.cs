@@ -62,7 +62,7 @@ public class DownloadHandler<TData> where TData : InputData, IHasPagination
     {
         var document = _documentFactory.Create<TData>(pageNumber, contractSettings, _lastBlockDictionary, _settingDownloader.ChainSettings);
         HandleTopics(contractSettings, document);
-        if (document.DownloadedContractData!.Pagination.HasMore)
+        if (document.DownloadedContractData!.GetPagination().HasMore)
         {
             taskManager.AddTask(HandleContracts(pageNumber + 1, contractSettings, taskManager));
         }
@@ -86,7 +86,7 @@ public class DownloadHandler<TData> where TData : InputData, IHasPagination
 
         documentDecoder.DocumentResponses.LockedSaveAll(_destination);
 
-        if (!document.DownloadedContractData!.Pagination.HasMore)
+        if (!document.DownloadedContractData!.GetPagination().HasMore)
         {
             UpdateDownloaderSettings(topicSettings, document);
             AddResult(topicSettings, documentDecoder.EventCount);
