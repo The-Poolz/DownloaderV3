@@ -2,5 +2,5 @@
 
 public interface IHasPagination
 {
-    Pagination Pagination { get; }
+    Pagination GetPagination();
 }
