@@ -47,6 +47,7 @@ namespace DownloaderV3.Source.CovalentDocument.Tests.Models.Covalent
             firstItem.TxHash.Should().Be("0x60e192550c1ce8c7f88f98d0383d46cc57324724bdd551334f84ee0fab1ebxx1");
             firstItem.Decoded.Should().NotBeNull();
             firstItem.Decoded!.Name.Should().Be("TransferIn");
+            firstItem.Decoded.Signature.Should().Be("TransferIn(uint256 Amount, address From, address Token)");
             firstItem.Decoded.Params.Should().HaveCount(3);
 
             var param = firstItem.Decoded.Params.First();
