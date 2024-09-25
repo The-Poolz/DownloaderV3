@@ -12,7 +12,7 @@ public class ERC20CacheManagerTests
     public ERC20CacheManagerTests()
     {
         Environment.SetEnvironmentVariable("AWS_REGION", "us-east-1");
-        Environment.SetEnvironmentVariable("LastBlockKey", "test");
+        Environment.SetEnvironmentVariable("ApiKey", "test");
         Environment.SetEnvironmentVariable("ApiUrl", "test");
     }
     [Fact]
