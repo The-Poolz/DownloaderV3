@@ -9,7 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
-*appsettings.json
+*aws-lambda-tools-defaults.json
+*[Aa]pp[Ss]ettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -362,3 +363,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/src/DownloaderV3.LambdaSet/aws-lambda-tools-defaults.json
