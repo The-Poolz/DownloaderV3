@@ -4,9 +4,29 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>DownloaderV3.Source CovalentDocument  Module</Title>
+    <Version>1.0.0</Version>
+    <Company>The Poolz</Company>
+    <Description>The module for fetching, decoding, and saving blockchain event data using Covalent API in the DownloaderV3 system.</Description>
+    <Copyright>© 2024 The Poolz</Copyright>
+    <PackageProjectUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3.Source.CovalentDocument</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3.Source.CovalentDocument</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>blockchain, downloader, covalent, document, events</PackageTags>
+    <PackageReleaseNotes>Release Notes for DownloaderV3.Source.CovalentDocument v1.0.1:</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DownloaderV3.Destination" Version="1.0.0" />
     <PackageReference Include="Net.Cache.DynamoDb.ERC20" Version="1.3.5" />
     <PackageReference Include="Nethereum.Hex" Version="4.21.4" />
     <PackageReference Include="Nethereum.Util" Version="4.21.4" />
@@ -16,7 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DownloaderV3.Destination\DownloaderV3.Destination.csproj" />
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
