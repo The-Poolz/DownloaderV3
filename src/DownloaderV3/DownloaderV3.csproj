@@ -4,18 +4,40 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>DownloaderV3  Module</Title>
+    <Version>1.0.0</Version>
+    <Company>The Poolz</Company>
+    <Copyright>© 2024 The Poolz</Copyright>
+    <PackageProjectUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Release Notes for DownloaderV3 v1.0.1:</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Description>The core module for managing blockchain data downloading and event processing in the DownloaderV3 system.</Description>
+    <PackageTags>blockchain, downloader, covalent, events, data</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DownloaderV3.Source.CovalentDocument" Version="1.0.0" />
+    <PackageReference Include="DownloaderV3.Source.CovalentLastBlock" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
     <PackageReference Include="Net.Utils.TaskManager" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DownloaderV3.Destination\DownloaderV3.Destination.csproj" />
-    <ProjectReference Include="..\DownloaderV3.Source.CovalentDocument\DownloaderV3.Source.CovalentDocument.csproj" />
-    <ProjectReference Include="..\DownloaderV3.Source.CovalentLastBlock\DownloaderV3.Source.CovalentLastBlock.csproj" />
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
