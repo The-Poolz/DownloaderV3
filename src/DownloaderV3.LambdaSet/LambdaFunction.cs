@@ -39,7 +39,7 @@ public class LambdaFunction
         services.AddTransient<IDocumentFactory, DocumentFactory>();
         services.AddTransient<IDocumentDecoderFactory, DocumentDecoderFactory>();
 
-        services.AddSingleton(_ => new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Staging, "DownloaderV3"));
+        services.AddSingleton(_ => new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Prod));
         services.AddSingleton<BaseDestination>(provider =>
         {
             var context = provider.GetRequiredService<DownloaderV3Context>();
