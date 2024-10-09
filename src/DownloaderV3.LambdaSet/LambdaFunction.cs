@@ -21,11 +21,7 @@ public class LambdaFunction
 
         ServiceConfigurator.ConfigureServices<DownloaderV3Context>(
             services,
-            provider => new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Prod),
-            logging =>
-            {
-                logging.AddConsole();
-            }
+            _ => new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Prod)
         );
 
         _serviceProvider = services.BuildServiceProvider();
