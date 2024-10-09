@@ -10,31 +10,25 @@ namespace DownloaderV3.Helpers;
 
 public static class ServiceConfigurator
 {
-    public static void ConfigureServices<TContext>(IServiceCollection services, Func<IServiceProvider, TContext> dbContextFactory)
+    public static void ConfigureServices<TContext>(
+        IServiceCollection services, 
+        Func<IServiceProvider, TContext> dbContextFactory, 
+        Action<ILoggingBuilder>? loggingConfiguration = null)
         where TContext : BaseDestination
     {
         services.AddLogging(config =>
         {
-            config.AddConsole();
+            if (loggingConfiguration != null)
+                loggingConfiguration(config);
+            else
+                config.AddConsole();
         });
 
-        if (services.All(s => s.ServiceType != typeof(GetSourcePage)))
-        {
-            services.AddTransient<GetSourcePage, GetLastBlockCovalent>();
-        }
-
-        if (services.All(s => s.ServiceType != typeof(IDocumentFactory)))
-        {
-            services.AddTransient<IDocumentFactory, DocumentFactory>();
-        }
-
-        if (services.All(s => s.ServiceType != typeof(IDocumentDecoderFactory)))
-        {
-            services.AddTransient<IDocumentDecoderFactory, DocumentDecoderFactory>();
-        }
+        if (services.All(s => s.ServiceType != typeof(GetSourcePage))) services.AddTransient<GetSourcePage, GetLastBlockCovalent>();
+        if (services.All(s => s.ServiceType != typeof(IDocumentFactory))) services.AddTransient<IDocumentFactory, DocumentFactory>();
+        if (services.All(s => s.ServiceType != typeof(IDocumentDecoderFactory))) services.AddTransient<IDocumentDecoderFactory, DocumentDecoderFactory>();
 
         services.AddSingleton(dbContextFactory);
-
         services.AddSingleton<BaseDestination>(provider =>
         {
             var context = provider.GetRequiredService<TContext>();
