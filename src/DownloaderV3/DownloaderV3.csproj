@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>DownloaderV3  Module</Title>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Company>The Poolz</Company>
     <Copyright>© 2024 The Poolz</Copyright>
     <PackageProjectUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3</PackageProjectUrl>

@@ -2,15 +2,10 @@
 using DownloaderV3.Result;
 using DownloaderV3.Helpers;
 using DownloaderV3.DataBase;
-using DownloaderV3.Destination;
 using Microsoft.Extensions.Logging;
 using ConfiguredSqlConnection.Extensions;
-using DownloaderV3.Source.CovalentLastBlock;
 using Microsoft.Extensions.DependencyInjection;
-using DownloaderV3.Source.CovalentDocument.Document;
-using DownloaderV3.Source.CovalentLastBlock.SourcePage;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;
-using DownloaderV3.Source.CovalentDocument.Document.DocumentDecoder;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
@@ -23,36 +18,22 @@ public class LambdaFunction
     public LambdaFunction()
     {
         var services = new ServiceCollection();
-        ConfigureServices(services);
+
+        ServiceConfigurator.ConfigureServices<DownloaderV3Context>(
+            services,
+            provider => new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Prod),
+            logging =>
+            {
+                logging.AddConsole();
+            }
+        );
 
         _serviceProvider = services.BuildServiceProvider();
     }
 
-    public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddLogging(config =>
-        {
-            config.AddConsole();
-        });
-
-        services.AddTransient<GetSourcePage, GetLastBlockCovalent>();
-        services.AddTransient<IDocumentFactory, DocumentFactory>();
-        services.AddTransient<IDocumentDecoderFactory, DocumentDecoderFactory>();
-
-        services.AddSingleton(_ => new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Prod));
-        services.AddSingleton<BaseDestination>(provider =>
-        {
-            var context = provider.GetRequiredService<DownloaderV3Context>();
-            return context;
-        });
-
-        services.AddTransient(typeof(DownloadHandler<>));
-    }
-
     public async Task<IEnumerable<ResultObject>> RunAsync(ILambdaContext lambdaContext)
     {
-        var logger = _serviceProvider.GetRequiredService<ILogger<LambdaFunction>>();
-        ApplicationLogger.Initialize(logger);
+        ApplicationLogger.Initialize(_serviceProvider.GetRequiredService<ILogger<LambdaFunction>>());
 
         var downloadHandler = _serviceProvider.GetRequiredService<DownloadHandler<InputData>>();
 
