@@ -39,13 +39,20 @@ jobs:
       run: dotnet tool install --global PlantUmlClassDiagramGenerator
 
     - name: Increase PlantUML size limit
-      run: |
-        echo "Setting PLANTUML_LIMIT_SIZE=8192"
-        export PLANTUML_LIMIT_SIZE=8192
+      run: echo "PLANTUML_LIMIT_SIZE=8192" >> $GITHUB_ENV
 
-    - name: Generate UML Diagram
+    - name: Run PlantUML server
+      uses: docker://plantuml/plantuml-server:jetty
+      with:
+        ports: 8080:8080
+        options: --detach --name plantuml
+
+    - name: Generate UML Diagram using local PlantUML server
       run: |
-        puml-gen ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths **/tests
+        puml-gen ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths **/tests -s "http://localhost:8080"
+
+    - name: Stop PlantUML server
+      run: docker stop plantuml && docker rm plantuml
 
     - name: Download plantuml
       run: pip install plantuml
