@@ -48,7 +48,6 @@ jobs:
     - name: Generate UML Diagram
       run: |
         puml-gen ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths **/tests
-        --server http://localhost:8080
 
     - name: Download plantuml
       run: pip install plantuml
