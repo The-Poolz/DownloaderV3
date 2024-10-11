@@ -4,12 +4,38 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>DownloaderV3.Source CovalentLastBlock Module</Title>
+    <Version>1.0.0</Version>
+    <Company>The Poolz</Company>
+    <Authors>$(Authors)</Authors>
+    <Copyright>Copyright @ darkarki83 The-Poolz 2024</Copyright>
+    <Description>The module for fetching the latest block data using Covalent API in the DownloaderV3 system.&lt;</Description>
+    <PackageProjectUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3.Source.CovalentLastBlock</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3.Source.CovalentLastBlock</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>Release Notes for DownloaderV3.Source.CovalentLastBlock v1.0.1:</PackageReleaseNotes>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Flurl.Http" Version="4.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Utils.EnvironmentManager" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

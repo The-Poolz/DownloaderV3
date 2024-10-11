@@ -8,7 +8,7 @@ namespace DownloaderV3.Source.CovalentDocument.Utilities
     public enum Environments
     {
         [EnvironmentVariable(isRequired: true)]
-        LastBlockKey,
+        ApiKey,
 
         [EnvironmentVariable(isRequired: true)]
         ApiUrl

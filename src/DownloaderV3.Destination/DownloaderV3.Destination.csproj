@@ -4,11 +4,36 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>DownloaderV3 Destination Module</Title>
+    <Company>The Poolz</Company>
+    <Description>An extensible interface and foundational structure for managing blockchain event data in real database implementations within the DownloaderV3 system.</Description>
+    <RepositoryUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3.Destination</RepositoryUrl>
+    <Copyright>Copyright @ darkarki83 The-Poolz 2024</Copyright>
+    <PackageProjectUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3.Destination</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>blockchain, downloader, covalent</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Version>1.0.0</Version>
+    <PackageReleaseNotes>Release Notes for DownloaderV3.Destination v1.0.1:</PackageReleaseNotes>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
