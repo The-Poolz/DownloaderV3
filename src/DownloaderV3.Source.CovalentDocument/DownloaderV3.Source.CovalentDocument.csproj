@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>DownloaderV3.Source CovalentDocument  Module</Title>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Company>The Poolz</Company>
     <Description>The module for fetching, decoding, and saving blockchain event data using Covalent API in the DownloaderV3 system.</Description>
     <Copyright>© 2024 The Poolz</Copyright>

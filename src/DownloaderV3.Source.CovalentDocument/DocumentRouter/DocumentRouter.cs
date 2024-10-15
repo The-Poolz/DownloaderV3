@@ -36,8 +36,7 @@ public static class DocumentRouter
 
     public static PreSaveActionBinder GetBinder(string responseModel)
     {
-        var classLocation = _responseTypes.FirstOrDefault(x => x.Key == responseModel).Value 
-                            ?? throw new InvalidOperationException($"Response '{responseModel}' not implement with '{nameof(ResponseModelAttribute)}' attribute.");
+        var classLocation = _responseTypes.FirstOrDefault(x => x.Key == responseModel).Value ?? throw new InvalidOperationException($"Response '{responseModel}' not implement with '{nameof(ResponseModelAttribute)}' attribute.");
 
         var responseType = Type.GetType(classLocation) ?? throw new ArgumentException(string.Format(ExceptionMessages.ClassSpecificationError, classLocation));
 
