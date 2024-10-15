@@ -14,7 +14,7 @@
     <PackageTags>blockchain, downloader, covalent</PackageTags>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Version>1.0.1</Version>
-    <PackageReleaseNotes>Release Notes for DownloaderV3.Destination v1.0.2:</PackageReleaseNotes>
+    <PackageReleaseNotes>Release Notes for DownloaderV3.Destination v1.0.1:</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
