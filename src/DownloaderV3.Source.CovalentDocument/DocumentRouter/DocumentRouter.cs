@@ -30,13 +30,13 @@ public static class DocumentRouter
 
             _responseTypes[type.Name] = _responseTypes[propertySetter!.DbSetName];
 
-            PropertySetters[type.Name] = new PropertySetterBeforeSave(propertySetter!.PropertyName, propertySetter.PropertyValue, propertySetter.DbSetName);
+            PropertySetters[type.Name] = new PropertySetterBeforeSave(propertySetter.PropertyName, propertySetter.PropertyValue, propertySetter.DbSetName);
         }
     }
 
     public static PreSaveActionBinder GetBinder(string responseModel)
     {
-        var classLocation = _responseTypes.FirstOrDefault(x => x.Key == responseModel).Value
+        var classLocation = _responseTypes.FirstOrDefault(x => x.Key == responseModel).Value 
                             ?? throw new InvalidOperationException($"Response '{responseModel}' not implement with '{nameof(ResponseModelAttribute)}' attribute.");
 
         var responseType = Type.GetType(classLocation) ?? throw new ArgumentException(string.Format(ExceptionMessages.ClassSpecificationError, classLocation));
@@ -49,11 +49,6 @@ public static class DocumentRouter
     public static IDocumentResponse GetDocumentType(string responseModel, IEnumerable<IReadOnlyDictionary<string, DataDecoder>> listOfData)
     {
         var binder = GetBinder(responseModel);
-
-        var instance = Activator.CreateInstance(binder.TypeHolder, listOfData, binder.BeforeSave) as IDocumentResponse;
-
-        if (instance != null && binder.BeforeSave is PropertySetterBeforeSave setter) setter.Run(instance);
-
-        return instance!;
+        return (IDocumentResponse)Activator.CreateInstance(binder.TypeHolder, listOfData, binder.BeforeSave)!;
     }
 }
