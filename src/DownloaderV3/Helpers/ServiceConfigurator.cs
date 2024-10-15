@@ -10,13 +10,13 @@ namespace DownloaderV3.Helpers;
 
 public static class ServiceConfigurator
 {
-    public static void ConfigureServices<TContext>(
-        IServiceCollection services, 
-        Func<IServiceProvider, TContext> dbContextFactory, 
-        Action<ILoggingBuilder>? loggingConfiguration = null)
-        where TContext : BaseDestination
+    public static IServiceProvider BuildServiceProvider(BaseDestination destination, Action<ILoggingBuilder>? loggingConfiguration)
     {
-        services.AddLogging(config =>
+        var serviceCollection = new ServiceCollection();
+
+        serviceCollection.AddSingleton(destination);
+
+        serviceCollection.AddLogging(config =>
         {
             if (loggingConfiguration != null)
                 loggingConfiguration(config);
@@ -24,17 +24,10 @@ public static class ServiceConfigurator
                 config.AddConsole();
         });
 
-        if (services.All(s => s.ServiceType != typeof(GetSourcePage))) services.AddTransient<GetSourcePage, GetLastBlockCovalent>();
-        if (services.All(s => s.ServiceType != typeof(IDocumentFactory))) services.AddTransient<IDocumentFactory, DocumentFactory>();
-        if (services.All(s => s.ServiceType != typeof(IDocumentDecoderFactory))) services.AddTransient<IDocumentDecoderFactory, DocumentDecoderFactory>();
+        if (serviceCollection.All(s => s.ServiceType != typeof(GetSourcePage))) serviceCollection.AddTransient<GetSourcePage, GetLastBlockCovalent>();
+        if (serviceCollection.All(s => s.ServiceType != typeof(IDocumentFactory))) serviceCollection.AddTransient<IDocumentFactory, DocumentFactory>();
+        if (serviceCollection.All(s => s.ServiceType != typeof(IDocumentDecoderFactory))) serviceCollection.AddTransient<IDocumentDecoderFactory, DocumentDecoderFactory>();
 
-        services.AddSingleton(dbContextFactory);
-        services.AddSingleton<BaseDestination>(provider =>
-        {
-            var context = provider.GetRequiredService<TContext>();
-            return context;
-        });
-
-        services.AddTransient(typeof(DownloadHandler<>));
+        return serviceCollection.BuildServiceProvider();
     }
 }
