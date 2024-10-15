@@ -15,7 +15,7 @@ public class LambdaFunction(DownloaderV3Context context)
     public readonly DownloaderV3Context Context = context;
 
     public LambdaFunction()
-        : this(new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Staging, "DownloaderV3"))
+        : this(new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Prod))
     { }
 
     public async Task<IEnumerable<ResultObject>> RunAsync(ILambdaContext lambdaContext)
