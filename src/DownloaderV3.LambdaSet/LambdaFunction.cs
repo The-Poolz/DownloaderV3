@@ -1,27 +1,38 @@
-﻿using Amazon.Lambda.Core;
-using DownloaderV3.Result;
-using DownloaderV3.Helpers;
-using DownloaderV3.DataBase;
+﻿using DownloaderV3.DataBase;
 using Microsoft.Extensions.Logging;
 using ConfiguredSqlConnection.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;
+using Amazon.Lambda.Core;
+using DownloaderV3.Helpers;
+using DownloaderV3.Result;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
 namespace DownloaderV3.LambdaSet;
 
-public class LambdaFunction(DownloaderV3Context context)
+public class LambdaFunction
 {
-    public readonly DownloaderV3Context Context = context;
+    private readonly ServiceProvider _serviceProvider;
 
     public LambdaFunction()
-        : this(new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Prod))
-    { }
+    {
+        var services = new ServiceCollection();
+
+        ServiceConfigurator.ConfigureServices<DownloaderV3Context>(
+            services,
+            _ => new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Prod)
+        );
+
+        _serviceProvider = services.BuildServiceProvider();
+    }
 
     public async Task<IEnumerable<ResultObject>> RunAsync(ILambdaContext lambdaContext)
     {
-        ApplicationLogger.Initialize(LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<LambdaFunction>());
+        ApplicationLogger.Initialize(_serviceProvider.GetRequiredService<ILogger<LambdaFunction>>());
 
-        return await new DownloadHandler<InputData>(Context).HandleAsync();
+        var downloadHandler = _serviceProvider.GetRequiredService<DownloadHandler<InputData>>();
+
+        return await downloadHandler.HandleAsync();
     }
 }
