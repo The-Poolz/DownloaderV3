@@ -2,6 +2,7 @@
 using DownloaderV3.Helpers;
 using Net.Utils.TaskManager;
 using DownloaderV3.Destination;
+using Microsoft.Extensions.Logging;
 using DownloaderV3.Destination.Models;
 using DownloaderV3.Builders.LastBlockBuilder;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +36,20 @@ public class DownloadHandler<TData> where TData : InputData, IHasPagination
 
         _documentFactory = serviceProvider.GetRequiredService<IDocumentFactory>();
         _documentDecoderFactory = serviceProvider.GetRequiredService<IDocumentDecoderFactory>();
+    }
+
+    public DownloadHandler(BaseDestination destination, Action<ILoggingBuilder>? loggingConfiguration = null)
+    {
+        _destination = destination;
+
+        var serviceCollection = ServiceConfigurator.BuildServiceProvider(destination, loggingConfiguration);
+
+        _getSourcePage = serviceCollection.GetRequiredService<GetSourcePage>();
+        _documentFactory = serviceCollection.GetRequiredService<IDocumentFactory>();
+        _documentDecoderFactory = serviceCollection.GetRequiredService<IDocumentDecoderFactory>();
+
+        _settingDownloader = new SettingDownloader(_destination);
+        _sqlQueryHelper = new SqlQueryHelper(_destination);
     }
 
     public async Task<IEnumerable<ResultObject>> HandleAsync()
