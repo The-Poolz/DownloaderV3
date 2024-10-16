@@ -5,14 +5,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Title>DownloaderV3  Module</Title>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Company>The Poolz</Company>
     <Copyright>© 2024 The Poolz</Copyright>
     <PackageProjectUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/The-Poolz/DownloaderV3/tree/master/src/DownloaderV3</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Release Notes for DownloaderV3 v1.0.1:</PackageReleaseNotes>
+    <PackageReleaseNotes>Release Notes for DownloaderV3 v1.0.2:</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Description>The core module for managing blockchain data downloading and event processing in the DownloaderV3 system.</Description>
     <PackageTags>blockchain, downloader, covalent, events, data</PackageTags>

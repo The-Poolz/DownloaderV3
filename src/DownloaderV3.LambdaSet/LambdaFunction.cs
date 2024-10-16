@@ -1,11 +1,11 @@
-﻿using DownloaderV3.DataBase;
+﻿using Amazon.Lambda.Core;
+using DownloaderV3.Result;
+using DownloaderV3.Helpers;
+using DownloaderV3.DataBase;
 using Microsoft.Extensions.Logging;
 using ConfiguredSqlConnection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;
-using Amazon.Lambda.Core;
-using DownloaderV3.Helpers;
-using DownloaderV3.Result;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
