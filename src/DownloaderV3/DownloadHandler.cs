@@ -2,6 +2,7 @@
 using DownloaderV3.Helpers;
 using Net.Utils.TaskManager;
 using DownloaderV3.Destination;
+using Microsoft.Extensions.Logging;
 using DownloaderV3.Destination.Models;
 using DownloaderV3.Builders.LastBlockBuilder;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,6 @@ using DownloaderV3.Source.CovalentLastBlock.SourcePage;
 using DownloaderV3.Source.CovalentDocument.DocumentRouter;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;
 using DownloaderV3.Source.CovalentDocument.Document.DocumentDecoder;
-using Microsoft.Extensions.Logging;
 
 namespace DownloaderV3;
 

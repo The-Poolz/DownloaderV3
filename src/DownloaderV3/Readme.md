@@ -27,30 +27,63 @@ Or, if you've packaged it as a NuGet package:
 dotnet add package DownloaderV3
 ```
 
-## Dependency Injection Setup
-To use DownloaderV3, set up services using `ServiceConfigurator`:
+## Dependency Injection Setup Setup
+To use DownloaderV3, set up services using `ServiceConfigurator` by default with context and logger configured by default:
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
 using DownloaderV3.Helpers;
+using DownloaderV3.Destination;
 
-var services = new ServiceCollection();
-ServiceConfigurator.ConfigureServices<CustomDestination>(
-    services,
-    provider => new CustomDestination(new DbContextOptionsBuilder<CustomDestination>()
-        .UseSqlServer("your-connection-string").Options),
-    logging => logging.AddConsole()
-);
+// Create the context for your database
+var context = new CustomDestination(new DbContextOptionsBuilder<CustomDestination>()
+    .UseSqlServer("your-connection-string")
+    .Options);
 
-var serviceProvider = services.BuildServiceProvider();
-var downloadHandler = serviceProvider.GetRequiredService<DownloadHandler<InputData>>();
+// Set up services with context and logging (using console logging by default)
+var downloadHandler = new DownloadHandler<InputData>(context);
+
 ```
 
-`ServiceConfigurator` simplifies setting up required dependencies such as logging, context, and factories.
+`ServiceConfigurator` helps in setting up required dependencies, such as logging, database context, and factories, using default configurations when necessary.
 
 ## Key Classes
 - **DownloadHandler<TData>**: The main handler for fetching, decoding, and saving blockchain data.
 - **BaseDestination**: Extend this class to define your own destination for data storage.
+
+## Dependency Injection Setup (Second Option)
+
+```csharp
+using Microsoft.Extensions.DependencyInjection;
+using DownloaderV3.Helpers;
+using DownloaderV3.Destination;
+using Microsoft.Extensions.Logging;
+
+// Set up your services
+var services = new ServiceCollection();
+
+// Configure the context and logging
+services.AddDbContext<CustomDestination>(options =>
+{
+    options.UseSqlServer("your-connection-string");
+});
+
+services.AddLogging(config => config.AddConsole());
+
+// Configure other services like GetSourcePage, IDocumentFactory, etc.
+services.AddTransient<GetSourcePage, MyCustomSourcePage>();
+services.AddTransient<IDocumentFactory, MyCustomDocumentFactory>();
+services.AddTransient<IDocumentDecoderFactory, MyCustomDocumentDecoderFactory>();
+
+// Build the service provider
+var serviceProvider = services.BuildServiceProvider();
+
+// Use the DownloadHandler with the service provider
+var downloadHandler = new DownloadHandler<InputData>(serviceProvider);
+
+// Use the handler
+var results = await downloadHandler.HandleAsync();
+```
 
 ## Advanced Configuration
 To create a custom destination, extend `BaseDestination`:
