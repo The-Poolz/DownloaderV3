@@ -1,13 +1,11 @@
 name: Generate UML Diagram
 
 on:
-  workflow_call:
-    inputs:
-      exclude-paths:
-        type: string
-        required: false
-        default: ''
-        description: 'Paths to exclude from UML generation'
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
 
