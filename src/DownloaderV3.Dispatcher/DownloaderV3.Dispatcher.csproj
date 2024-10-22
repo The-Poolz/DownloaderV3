@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.SQS" Version="3.7.400.36" />
+    <PackageReference Include="DownloaderV3" Version="1.0.2" />
+    <PackageReference Include="DownloaderV3.Destination" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DownloaderV3.DataBase">
+      <HintPath>..\..\..\DownloaderV3.DataBase\src\DownloaderV3.DataBase\bin\Debug\net8.0\DownloaderV3.DataBase.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
