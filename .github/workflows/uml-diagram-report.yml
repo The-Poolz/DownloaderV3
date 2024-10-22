@@ -1,0 +1,90 @@
+name: Generate UML Diagram
+
+on:
+  workflow_call:
+    inputs:
+      exclude-paths:
+        type: string
+        required: false
+        default: ''
+        description: 'Paths to exclude from UML generation'
+
+jobs:
+
+  uml-diagram-report:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: ${{ github.head_ref }}
+
+    - name: Checkout solidity workflows repository
+      uses: actions/checkout@v4
+      with:
+        repository: The-Poolz/.net-workflows
+        ref: master
+        path: .net-workflows
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Install PlantUMLClassDiagramGenerator
+      run: dotnet tool install --global PlantUmlClassDiagramGenerator
+
+    - name: Generate UML Diagram
+      run: |
+        puml-gen ./ ./diagrams/ -dir -allInOne -createAssociation -excludePaths ${{ inputs.exclude-paths }}
+
+    - name: Install PlantUML and Graphviz
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y graphviz
+        sudo apt-get install -y openjdk-11-jre
+        wget https://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O plantuml.jar
+
+    - name: Convert PUML to SVG
+      run: |
+        mkdir -p svg_diagrams
+        for file in $(find ./diagrams/ -name "*.puml"); do
+          java -jar plantuml.jar -tsvg "$file" -o svg_diagrams/
+        done
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./svg_diagrams
+        publish_branch: gh-pages
+
+    - name: Generate Diagram URLs
+      run: |
+        echo "Diagram URLs:" > diagram_urls.txt
+        for file in $(find ./svg_diagrams/ -name "*.svg"); do
+          filename=$(basename "$file")
+          url="https://username.github.io/repository/${filename}"
+          echo "| [${filename%.*}](${url}) | ./diagrams/${filename%.*}.puml |" >> diagram_urls.txt
+        done
+
+    - name: Format URLs for PR Comment
+      run: |
+        echo "# Diagrams" > pr_comment.md
+        echo "<details><summary>Diagrams summary</summary>" >> pr_comment.md
+        echo "" >> pr_comment.md
+        echo "|**URL**|**PATH**|" >> pr_comment.md
+        echo "|:---|:---|" >> pr_comment.md
+        cat diagram_urls.txt >> pr_comment.md
+        echo "</details>" >> pr_comment.md
+      shell: bash
+
+    - name: Comment PR with Diagram URLs
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        header: "📈 Diagrams"
+        path: pr_comment.md
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
