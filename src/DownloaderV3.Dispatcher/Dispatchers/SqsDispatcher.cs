@@ -14,7 +14,7 @@ public class SqsDispatcher(ILogger logger) : IEventDispatcher
 
     public async Task DispatchAsync(ResultObject downloaderResult, DispatcherSettings? settings)
     {
-        var sqsUrl = GetQueueUrl(settings!.DispatchEnvironment!);
+        var sqsUrl = GetQueueUrl(settings!.DispatchEnvironment);
 
         var serializedMessage = SerializeMessage(downloaderResult);
 

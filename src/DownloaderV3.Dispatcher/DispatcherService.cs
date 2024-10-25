@@ -9,9 +9,13 @@ namespace DownloaderV3.Dispatcher
 {
     public class DispatcherService(DownloaderV3Context context, ILogger logger)
     {
+        public readonly IEventDispatcherFactory DispatcherFactory = new EventDispatcherFactory(logger);
+        public readonly DownloaderV3Context Context = context;
+
+
         public async Task SendDispatchAsync(IEnumerable<ResultObject> resultObjects)
         {
-            var dispatchSettings = await context.DispatcherSettings.Where(ds => ds.IsActive)
+            var dispatchSettings = await Context.DispatcherSettings.Where(ds => ds.IsActive)
                 .ToListAsync();
 
             var tasks = resultObjects
@@ -34,13 +38,13 @@ namespace DownloaderV3.Dispatcher
             {
                 logger.LogInformation($"Dispatching response for ChainId: {result.ChainId}, EventName: {result.EventName}");
 
-                //TODO: Implement SNS dispatcher + make a dynamic option to add a new implementation
-                IEventDispatcher dispatcher = (settings.DispatchType switch
+                var dispatcher = DispatcherFactory.CreateDispatcher(settings.DispatchType);
+
+                if (dispatcher == null)
                 {
-                    "SQS" => new SqsDispatcher(logger),
-                    //"SNS" => new SnsDispatcher(_snsClient, logger),
-                    _ => null
-                })!;
+                    logger.LogError($"Unsupported DispatchType: {settings.DispatchType} for ChainId: {result.ChainId}");
+                    return;
+                }
 
                 await dispatcher.DispatchAsync(result, settings);
             }
