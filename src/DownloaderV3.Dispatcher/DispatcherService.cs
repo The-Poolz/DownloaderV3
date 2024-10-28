@@ -1,21 +1,21 @@
-﻿using DownloaderV3.DataBase;
-using DownloaderV3.DataBase.Models;
-using DownloaderV3.Dispatcher.Dispatchers;
+﻿using DownloaderV3.Dispatcher.Dispatchers;
+using DownloaderV3.Dispatcher.Models;
 using DownloaderV3.Result;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DownloaderV3.Dispatcher
 {
-    public class DispatcherService(DownloaderV3Context context, ILogger logger)
+    public class DispatcherService(LocalContextWrapper contextWrapper, ILogger logger)
     {
         public readonly IEventDispatcherFactory DispatcherFactory = new EventDispatcherFactory(logger);
-        public readonly DownloaderV3Context Context = context;
 
+        // TODO: change to DownloaderV3.DataBase after update DownloaderV3.DataBase version
+        public LocalContextWrapper ContextWrapper { get; } = contextWrapper;
 
         public async Task SendDispatchAsync(IEnumerable<ResultObject> resultObjects)
         {
-            var dispatchSettings = await Context.DispatcherSettings.Where(ds => ds.IsActive)
+            var dispatchSettings = await ContextWrapper.DispatchSettings.Object.Where(ds => ds.IsActive)
                 .ToListAsync();
 
             var tasks = resultObjects
@@ -36,6 +36,7 @@ namespace DownloaderV3.Dispatcher
         {
             try
             {
+                // TODO : think about logging (do i need so many logs?)
                 logger.LogInformation($"Dispatching response for ChainId: {result.ChainId}, EventName: {result.EventName}");
 
                 var dispatcher = DispatcherFactory.CreateDispatcher(settings.DispatchType);

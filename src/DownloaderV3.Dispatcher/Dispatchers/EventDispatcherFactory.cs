@@ -13,8 +13,10 @@ public class EventDispatcherFactory : IEventDispatcherFactory
 
         _dispatchers = new Dictionary<string, Func<IEventDispatcher>>
         {
+            // TODO: Add other dispatchers and think about how to inject SqsDispatcher like dependencies
             { "SQS", () => new SqsDispatcher(_logger) },
             // { "SNS", () => new SnsDispatcher(_logger) }
+            // { "Kinesis", () => new KinesisDispatcher(_logger) }
         };
     }
 

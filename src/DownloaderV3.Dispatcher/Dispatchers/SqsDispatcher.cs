@@ -4,7 +4,7 @@ using Amazon.SQS.Model;
 using DownloaderV3.Result;
 using EnvironmentManager.Core;
 using Microsoft.Extensions.Logging;
-using DownloaderV3.DataBase.Models;
+using DownloaderV3.Dispatcher.Models;
 
 namespace DownloaderV3.Dispatcher.Dispatchers;
 
@@ -34,8 +34,6 @@ public class SqsDispatcher(ILogger logger) : IEventDispatcher
             resultObject.ChainId,
             resultObject.EventName,
             resultObject.Count,
-            // resultObject.From,
-            // resultObject.To,
         };
         return JsonConvert.SerializeObject(message, Formatting.Indented);
     }
