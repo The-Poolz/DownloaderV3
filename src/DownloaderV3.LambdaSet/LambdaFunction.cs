@@ -4,35 +4,24 @@ using DownloaderV3.Helpers;
 using DownloaderV3.DataBase;
 using Microsoft.Extensions.Logging;
 using ConfiguredSqlConnection.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using DownloaderV3.Source.CovalentDocument.Models.Covalent;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
 namespace DownloaderV3.LambdaSet;
 
-public class LambdaFunction
+public class LambdaFunction(DownloaderV3Context context)
 {
-    private readonly ServiceProvider _serviceProvider;
+    public readonly DownloaderV3Context Context = context;
 
     public LambdaFunction()
-    {
-        var services = new ServiceCollection();
-
-        ServiceConfigurator.ConfigureServices<DownloaderV3Context>(
-            services,
-            _ => new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Prod)
-        );
-
-        _serviceProvider = services.BuildServiceProvider();
-    }
+        : this(new DbContextFactory<DownloaderV3Context>().Create(ContextOption.Prod))
+    { }
 
     public async Task<IEnumerable<ResultObject>> RunAsync(ILambdaContext lambdaContext)
     {
-        ApplicationLogger.Initialize(_serviceProvider.GetRequiredService<ILogger<LambdaFunction>>());
+        ApplicationLogger.Initialize(LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<LambdaFunction>());
 
-        var downloadHandler = _serviceProvider.GetRequiredService<DownloadHandler<InputData>>();
-
-        return await downloadHandler.HandleAsync();
+        return await new DownloadHandler<InputData>(Context).HandleAsync();
     }
 }
